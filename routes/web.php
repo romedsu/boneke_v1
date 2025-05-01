@@ -1,0 +1,63 @@
+<?php
+
+use App\Http\Controllers\AnuncioController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ComentarioController;
+
+
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+
+// Route::get('/', function () {
+//     return Inertia::render('welcome');
+// })->name('home');
+
+
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     Route::get('dashboard', function () {
+//         return Inertia::render('dashboard');
+//     })->name('dashboard');
+// });
+
+// Route::middleware(['auth', 'verified'])
+//         ->group(function () {
+//             Route::get('/dashboard', [AnuncioController::class, 'dashboard'])->name('dashboard');
+//             Route::get('/', [AnuncioController::class, 'dashboard'])->name('home');
+// });
+
+Route::middleware(['auth', 'verified'])
+        ->group(function () {
+            Route::get('/dashboard', [AnuncioController::class, 'dashboard'])->name('dashboard');
+            Route::get('/', [AnuncioController::class, 'index'])->name('home');
+});
+
+
+Route::resource('anuncios', AnuncioController::class)
+        ->only(['index','store','update','edit','destroy','show','create'])
+        ->middleware(['auth']);
+
+        
+// Route::get('/create', [AnuncioController::class, 'create']);
+        
+// Route::get('/anuncios/index', [AnuncioController::class, 'index'])->name('anuncios.index');
+        
+Route::get('/contacto',function(){
+        return Inertia::render('Contacto');
+});
+
+//COMENTARIOS
+Route::resource('comentarios', ComentarioController::class);
+
+// Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+//      ->middleware('web')
+//      ->name('logout');
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+   
+
+
+
+
+require __DIR__.'/settings.php';
+require __DIR__.'/auth.php';
