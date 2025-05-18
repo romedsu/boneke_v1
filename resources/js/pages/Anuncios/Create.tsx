@@ -1,14 +1,11 @@
-import { type BreadcrumbItem } from '@/types';
-
-// import Authenticated from '@/layouts/AuthenticatedLayout'
-
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 
 const Create = ({}) => {
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -17,11 +14,16 @@ const Create = ({}) => {
         descripcion: '',
         cambio: '',
         lugar: '',
+        imagen:[] as File[],
     });
 
-    const submit = (e) => {
+    const submit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(route('anuncios.store'), { onSuccess: () => reset() });
+
+        post(route('anuncios.store'), {
+            // data,
+            onSuccess: () => reset(),
+        });
     };
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -32,14 +34,13 @@ const Create = ({}) => {
     ];
 
     return (
-        // <div>Index</div>
-        // <AuthLayout   user={auth.user}>
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Nuevo anuncio" />
-           
+
             <Card>
-                <form onSubmit={submit}>
-                    <label className="flex">
+                <form onSubmit={submit} encType="multipart/form-data">
+                    <label>
+                        Articulo
                         <Input
                             value={data.articulo}
                             onChange={(e) => setData('articulo', e.target.value)}
@@ -51,7 +52,8 @@ const Create = ({}) => {
                         <InputError message={errors.articulo} />
                     </label>
 
-                    <label className="flex px-1">
+                    <label>
+                        Valor
                         <Input
                             value={data.valor}
                             onChange={(e) => setData('valor', e.target.value)}
@@ -63,7 +65,8 @@ const Create = ({}) => {
                         <InputError message={errors.valor} />
                     </label>
 
-                    <label className="flex px-1">
+                    <label>
+                        Descripción
                         <Input
                             value={data.descripcion}
                             onChange={(e) => setData('descripcion', e.target.value)}
@@ -75,7 +78,8 @@ const Create = ({}) => {
                         <InputError message={errors.descripcion} />
                     </label>
 
-                    <label className="flex px-1">
+                    <label>
+                        Cambio por
                         <Input
                             value={data.cambio}
                             onChange={(e) => setData('cambio', e.target.value)}
@@ -87,10 +91,11 @@ const Create = ({}) => {
                         <InputError message={errors.cambio} />
                     </label>
 
-                    <label className="flex px-1">
+                    <label>
+                        Lugar
                         <Input
                             value={data.lugar}
-                            onChange={(e) => setData('lugar', e.target.value)}
+                            onChange={(e) => setData('lugar',e.target.value)}
                             type="text"
                             className="m-2"
                             placeholder="Lugar:"
@@ -99,18 +104,22 @@ const Create = ({}) => {
                         <InputError message={errors.lugar} />
                     </label>
 
+                    <label>
+                        Imagen (obligatorio)
+                        <Input
+                            // value={data.imagen}
+                            onChange={(e) => setData('imagen',  e.target.files ? Array.from(e.target.files): [])}
+                            type="file"
+                            className="m-2"
+                           accept='image/*'
+                           multiple
+                        />
+                        <InputError message={errors.imagen} />
+                    </label>
+
                     <Button className="text-md mx-5 my-2 bg-amber-700 font-bold text-white">Publicar</Button>
                 </form>
             </Card>
-
-            <Card>
-                <CardHeader className="bg-amber-700 p-4">
-                    <CardTitle>Title</CardTitle>
-                </CardHeader>
-                <CardContent>Contenido</CardContent>
-            </Card>
-
-            {/* </AuthLayout> */}
         </AppLayout>
     );
 };

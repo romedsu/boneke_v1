@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -9,9 +10,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 
-import { LucidePenBox, Trash2,MessageCircleMore } from 'lucide-react';
+import { LucidePenBox, Trash2,MessageCircleMore,Heart } from 'lucide-react';
 
 import { Link } from '@inertiajs/react';
+
 
 
 
@@ -26,8 +28,52 @@ const breadcrumbs: BreadcrumbItem[] = [
 const token=document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
 
 
+// FN para limitar máximo palabras para mostrar
+const limite=20;
+const limitarPalabras = (texto: string, limite: number): string => {
+    const palabras = texto.split(' ');
+    if (palabras.length > limite) {
+        return palabras.slice(0, limite).join(' ') + '...';
+    }
+    return texto;
+};
 
-const Index: React.FC<{ anuncios: any[]; userLogin: any }> = ({ anuncios, userLogin }) => {
+
+//FN para actualizar likes
+const updateLike = async (anuncioId: number, setAnuncios: React.Dispatch<React.SetStateAction<any[]>>) => {
+    try {
+        const res = await fetch(`/likes/${anuncioId}`, {
+            method: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': token,
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+
+        // Actualizar el estado de los anuncios
+        setAnuncios((prevAnuncios) =>
+            prevAnuncios.map((anuncio) =>
+                anuncio.id === anuncioId
+                    ? {
+                          ...anuncio,
+                          liked_by_user: data.liked, // Actualizar si el usuario dio like
+                          likes_count: data.liked
+                              ? anuncio.likes_count + 1 // Incrementar likes si dio like
+                              : anuncio.likes_count - 1, // Decrementar likes si quitó el like
+                      }
+                    : anuncio
+            )
+        );
+    } catch (error) {
+        console.error('Error al dar like:', error);
+    }
+};
+
+
+
+const Index: React.FC<{ anuncios: any[]; userLogin: any }> = ({  anuncios: initialAnuncios, userLogin }) => {
+     const [anuncios, setAnuncios] = useState(initialAnuncios);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Index" />
@@ -46,7 +92,7 @@ const Index: React.FC<{ anuncios: any[]; userLogin: any }> = ({ anuncios, userLo
                     </div>
                 </div>
 
-                <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
+                <div className="border-sidebar-border/70 dark:border-sidebar-border relative max-w-[1024px] min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
                     <Table>
                         <TableCaption>Una lista de tus recientes artículos 2</TableCaption>
                         <TableHeader className="bg-amber-700">
@@ -73,7 +119,7 @@ const Index: React.FC<{ anuncios: any[]; userLogin: any }> = ({ anuncios, userLo
                                     <TableCell>{anuncio.user.name}</TableCell>
                                     <TableCell>{anuncio.lugar}</TableCell>
                                     <TableCell>{anuncio.valor}</TableCell>
-                                    <TableCell>{anuncio.descripcion}</TableCell>
+                                    <TableCell className='max-w-[50px]'>{limitarPalabras(anuncio.descripcion,4)}</TableCell>
                                     <TableCell>{anuncio.cambio}</TableCell>
                                 </TableRow>
                             ))}
@@ -93,7 +139,7 @@ const Index: React.FC<{ anuncios: any[]; userLogin: any }> = ({ anuncios, userLo
                         <Card key={anuncio.id} 
                         // className="m-1.5 bg-neutral-800 px-1"
                         
-                        className="cursor-pointer border border-transparent hover:border-amber-700 duration-500"
+                        className="cursor-pointer border border-transparent hover:border-amber-700 duration-500 h-[600px]"
                      
 
                         onClick={() => (window.location.href = route('anuncios.show', anuncio.id))}
@@ -108,30 +154,46 @@ const Index: React.FC<{ anuncios: any[]; userLogin: any }> = ({ anuncios, userLo
                                     </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <CardDescription>Descripcion - {anuncio.descripcion}</CardDescription>
+                                <CardDescription>Descripcion - {limitarPalabras(anuncio.descripcion,limite)}</CardDescription>
                             </CardContent>
+                            
+                            <CardContent>
+                                 <div className="h-[250px] w-full bg-neutral-800 flex items-center justify-center rounded-md overflow-hidden">
+
+                                {anuncio.imagen.length >0 &&(
+                                    
+                                    <img src={`/storage/${anuncio.imagen[0]?.ruta}`} alt={`Imagen`} className="h-full w-auto object-contain p-2" />
+                                )}
+                              
+                                </div>
+                            </CardContent>
+                            <CardContent>
+    <button
+        onClick={(e) => {
+            e.stopPropagation();
+            updateLike(anuncio.id, setAnuncios);
+        }}
+        className="bg-transparent border-none p-0 cursor-pointer"
+    >
+        <Heart
+            className={`h-6 w-6 transition-transform duration-200 ${
+                anuncio.liked_by_user
+                    ? 'text-red-400 fill-red-400 hover:scale-105'
+                    : 'text-gray-500 hover:text-red-400 hover:scale-105'
+            }`}
+        />
+    </button>
+    <p className="mt-2 text-sm text-gray-500">Total de likes: {anuncio.likes_count}</p>
+</CardContent>
+
                             <CardFooter className="flex justify-between">
 
                                 {/* if (para mostrar botones de editar y borrar solo al usuario que lo creó) */}
                                 {userLogin.id === anuncio.user.id && (
                                     <>
-                                        {/* <Button>
-                                            <LucidePenBox />
-                                            </Button> */}
-
-                                        {/* <Button className="p-3">
-                                            <Link href={route('anuncios.edit', anuncio.id)}>
-                                                <LucidePenBox />
-                                            </Link>
-                                        </Button> */}
-
-                                        {/* <Button className="p-3">
-                                            <Link href={route('anuncios.destroy', anuncio.id)}>
-                                                <Trash2 />
-                                            </Link>
-                                        </Button> */}
-
-                                        <form method="POST" action={route('anuncios.edit', anuncio.id)}>
+                                    
+                                        {/* BOTON EDITAR */}
+                                        {/* <form method="POST" action={route('anuncios.edit', anuncio.id)}>
                                             <input
                                                 type="hidden"
                                                 name="_token"
@@ -143,8 +205,9 @@ const Index: React.FC<{ anuncios: any[]; userLogin: any }> = ({ anuncios, userLo
                                             <Button type="submit" className="p-3">
                                                 <LucidePenBox />
                                             </Button>
-                                        </form>
+                                        </form> */}
 
+                                        {/* BOTON BORRAR */}
                                         <form method="POST" action={route('anuncios.destroy', anuncio.id)}>
                                             <input
                                                 type="hidden"

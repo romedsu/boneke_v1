@@ -157,3 +157,20 @@
         @apply bg-background text-foreground;
     }
 }
+
+/* CARRUSEL IMAGENES (OP 1) */
+.embla {
+    overflow: hidden; /* Oculta el contenido que no está visible */
+    width: 100%; /* Ajusta el ancho del carrusel */
+}
+
+.embla__container {
+    display: flex; /* Alinea las diapositivas en fila */
+    transition: transform 0.3s ease; /* Suaviza el movimiento */
+}
+
+.embla__slide {
+    flex: 0 0 100%; /* Cada diapositiva ocupa el 100% del ancho del carrusel */
+    position: relative;
+    text-align: center;
+}

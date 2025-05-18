@@ -17,7 +17,7 @@ class Anuncio extends Model
     'descripcion',
     'cambio',
     'lugar',
-    'user_id'
+    'user_id',
    ];
 
    public function user(){
@@ -26,5 +26,12 @@ class Anuncio extends Model
 
    public function comentario(){
       return $this->hasMany(Comentario::class);
+   }
+
+   public function imagen(){
+      return $this->hasMany(Imagen::class);
+   }
+   public function likes(){
+      return $this->hasMany(Like::class);
    }
 }
