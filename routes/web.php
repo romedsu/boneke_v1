@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnuncioController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\LikeController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,9 @@ Route::resource('comentarios', ComentarioController::class);
 //      ->name('logout');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+
+
+Route::put('/likes/{anuncio}', [LikeController::class, 'update'])->middleware('auth');
    
 
 
