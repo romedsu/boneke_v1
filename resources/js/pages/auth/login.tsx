@@ -32,17 +32,21 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         e.preventDefault();
         post(route('login'), {
             onFinish: () => reset('password'),
+               onSuccess: () => {
+                //recarga página tras login correcto
+            window.location.reload(); 
+        },
         });
     };
 
     return (
-        <AuthLayout title="Inicia sesión en Bonoko" description="Enter your email and password below to log in">
-            <Head title="Log in" />
+        <AuthLayout title="Inicia sesión en Boneke" description="">
+            <Head title="Inicio de sesión" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="email">Email</Label>
                         <Input
                             id="email"
                             type="email"
@@ -52,17 +56,17 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             autoComplete="email"
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
+                            placeholder="email@ejemplo.com"
                         />
                         <InputError message={errors.email} />
                     </div>
 
                     <div className="grid gap-2">
                         <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">Contraseña</Label>
                             {canResetPassword && (
                                 <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    Forgot password?
+                                    ¿Has olvidado tu contraseña?
                                 </TextLink>
                             )}
                         </div>
@@ -74,7 +78,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             autoComplete="current-password"
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
+                            placeholder="Contraseña"
                         />
                         <InputError message={errors.password} />
                     </div>
@@ -87,19 +91,19 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             onClick={() => setData('remember', !data.remember)}
                             tabIndex={3}
                         />
-                        <Label htmlFor="remember">Remember me</Label>
+                        <Label htmlFor="remember">Recuérdame</Label>
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full bg-amber-700" tabIndex={4} disabled={processing}>
+                    <Button type="submit" className="mt-4 w-full bg-amber-700 rounded-3xl" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        <span className='text-white'>Log in</span>
+                        <span className='text-white'>Iniciar sesión</span>
                     </Button>
                 </div>
 
                 <div className="text-muted-foreground text-center text-sm">
-                    Don't have an account?{' '}
+                   ¿No tiene cuenta? {' '}
                     <TextLink href={route('register')} tabIndex={5}>
-                        Sign up
+                         Regístrate
                     </TextLink>
                 </div>
             </form>

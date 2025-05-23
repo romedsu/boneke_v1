@@ -16,9 +16,17 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 // } else {
 //     console.error("CSRF token no encontrado.");
 // }
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+if (!csrfToken) {
+    console.error("CSRF token NO encontrado al iniciar la app.");
+} else {
+    console.log("CSRF token encontrado al iniciar la app:", csrfToken);
+}
 
 //IMPORTA VISTAS de la carpeta /pages (los .tsx)
 createInertiaApp({
+
+    
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
     setup({ el, App, props }) {

@@ -41,7 +41,7 @@ class AnuncioController extends Controller
         //withCount -> para acragar en nº de comentarios
         //get-> Toddos los annunciios
         
-        $anuncios=Anuncio::with('user','imagen') ->withCount('comentario','likes')->get()
+        $anuncios=Anuncio::with('user','imagen')->orderBy('created_at', 'desc') ->withCount('comentario','likes')->get()
          ->map(function ($anuncio) {
             // Agregar si el usuario actual ya dio like
             $anuncio->liked_by_user = $anuncio->likes->contains('user_id', Auth::id());
@@ -54,6 +54,7 @@ class AnuncioController extends Controller
         return Inertia::render('Anuncios/Index', [
             'anuncios' => $anuncios,
             'userLogin' => $userLogin,
+            'flash' => session('flash'),
         ]);
     }
 
@@ -113,7 +114,7 @@ class AnuncioController extends Controller
       //     'ruta'=>$request->file('imagen')->store('imagenes','public'),
       // ]);
     
-       return redirect()->route('anuncios.index')->with('creado','Anuncio creado con éxtio');
+       return redirect()->route('anuncios.index')->with('flash','Anuncio creado con éxtio');
     }
 
     /**
@@ -169,7 +170,7 @@ class AnuncioController extends Controller
         //OPCION v1 (desde la vista de editar con formulario)
         // return redirect()->route('anuncios.index')->with('actualizado','Anuncio editado con éxito');
 
-        return back()->with('actualizado','Anuncio actualizado con éxito');
+        return back()->with('flash','Anuncio actualizado con éxito');
     }
     
     /**
@@ -180,7 +181,7 @@ class AnuncioController extends Controller
         $anuncio=Anuncio::findOrFail($id);
         $anuncio->delete();
         
-        return redirect()->route('anuncios.index')->with('eliminado','Anuncio eliminado con éxito');
+        return redirect()->route('anuncios.index')->with('flash','Anuncio eliminado');
         
     }
 
