@@ -22,16 +22,16 @@ export default defineConfig({
             'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
         },
     },
-    
+
     //docker
-     server: {
-    host: '0.0.0.0',
-    port: 5173,
-    strictPort: true,
-    hmr: {
-      host: 'localhost',
-    }
-  },
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        // hmr: {
+        //   host: 'localhost',
+        // }
+    },
     // server: {
     //     host: '127.0.0.1', // Cambia ::1 a 127.0.0.1 para evitar problemas con IPv6
     //     port: 5173,        // Confirma que el puerto coincide con tus configuracione
