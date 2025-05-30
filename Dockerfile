@@ -20,11 +20,11 @@ RUN if [ -d "dist" ]; then cp -r dist/* /var/www/html/public/; fi
 
 WORKDIR /var/www/html
 
-# --- Aquí va la solución clave ---
+# Crear la base SQLite vacía y dar permisos
 RUN mkdir -p database && touch database/database.sqlite && chmod -R 777 database
-RUN php artisan migrate --seed --force
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 8000
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+
+CMD php artisan migrate --seed --force && php artisan serve --host=0.0.0.0 --port=8000
