@@ -10,7 +10,7 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+RUN composer install --optimize-autoloader --no-interaction --prefer-dist
 
 # Si tienes frontend tipo Vite/React:
 WORKDIR /var/www/html/frontend
