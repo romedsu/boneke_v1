@@ -31,6 +31,12 @@ export default defineConfig({
         // hmr: {
         //   host: 'localhost',
         // }
+
+           hmr: {
+            host: process.env.VITE_APP_URL
+                ? process.env.VITE_APP_URL.replace(/^https?:\/\//, '')
+                : 'localhost',
+        },
     },
     // server: {
     //     host: '127.0.0.1', // Cambia ::1 a 127.0.0.1 para evitar problemas con IPv6
