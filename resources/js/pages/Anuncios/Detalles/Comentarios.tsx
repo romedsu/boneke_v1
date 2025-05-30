@@ -22,14 +22,17 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
         <div>
             <h1>COMENTARIOS</h1>
             {comentarios.map((comentario) => (
-                //   const fecha= new Date(comentario.created_at).toLocaleDateString();
 
                 <div className="flex justify-center">
-                    <Card key={comentario.id} className="mx-4 my-2 w-full max-w-[970px] flex-col bg-neutral-800 px-1">
+                    <Card key={comentario.id} className="mx-4 my-2 w-full max-w-[970px] flex-col bg-neutral-800 px-1 py-4">
                         <CardHeader>
-                            <CardTitle>User_id: {comentario.user_id}</CardTitle>
-                            {/* <CardDescription>Publicado por <span className='font-black text-amber-600'>{comentario.user.name}</span> el <span className='font-medium text-amber-600'>{fecha}</span></CardDescription> */}
-                            {/* <CardDescription>Publicado por <span className='font-black text-amber-600'>{comentario.user.name}</span> </CardDescription> */}
+                            {/* <CardTitle> {comentario.user.name}</CardTitle> */}
+
+                           <CardTitle className="text-sm font-light  mb-3 text-right">
+                                        {' '}
+                                        Publicado por <span className="font-bold text-amber-600">{comentario.user.name}</span> el{' '}
+                                        <span className="font-medium text-amber-600">{new Date(comentario.created_at).toLocaleDateString()}</span>
+                                    </CardTitle>
                         </CardHeader>
 
                         <CardContent>
@@ -53,7 +56,7 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
                                 </form>
                             ) : (
                                 // Modo de visualización
-                                <CardDescription>Contenido - {comentario.contenido}</CardDescription>
+                                <CardDescription> {comentario.contenido}</CardDescription>
                             )}
                         </CardContent>
 

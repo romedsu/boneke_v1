@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Anuncio extends Model
@@ -18,6 +19,7 @@ class Anuncio extends Model
     'cambio',
     'lugar',
     'user_id',
+    'categoria_id',
    ];
 
    public function user(){
@@ -34,4 +36,10 @@ class Anuncio extends Model
    public function likes(){
       return $this->hasMany(Like::class);
    }
+
+   public function categoria(){
+      return $this->belongsTo(Categoria::class);
+   }
+
+   use HasFactory;
 }

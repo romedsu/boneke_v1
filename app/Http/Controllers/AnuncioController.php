@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Anuncio;
 use App\Models\Comentario;
 use App\Models\Imagen;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -39,14 +40,25 @@ class AnuncioController extends Controller
 
         //with->datos de los anuncios y los datos relacionados con ese usuario
         //withCount -> para acragar en nº de comentarios
-        //get-> Toddos los annunciios
+        //get-> Toddos los annuncios
         
-        $anuncios=Anuncio::with('user','imagen')->orderBy('created_at', 'desc') ->withCount('comentario','likes')->get()
-         ->map(function ($anuncio) {
-            // Agregar si el usuario actual ya dio like
-            $anuncio->liked_by_user = $anuncio->likes->contains('user_id', Auth::id());
-            return $anuncio;
-        });
+        $anuncios=Anuncio::with('user','imagen','categoria')
+        ->orderBy('created_at', 'desc') 
+        ->withCount('comentario','likes')
+        ->paginate(9);
+
+        // ->get()
+        //  ->map(function ($anuncio) {
+        //     // Agregar si el usuario actual ya dio like
+        //     $anuncio->liked_by_user = $anuncio->likes->contains('user_id', Auth::id());
+        //     return $anuncio;
+        // });
+
+          $anuncios->getCollection()->transform(function ($anuncio) {
+        $anuncio->liked_by_user = $anuncio->likes->contains('user_id', Auth::id());
+        return $anuncio;
+    });
+
 
         //datos del usuario logueado
         $userLogin = Auth::user();
@@ -63,7 +75,10 @@ class AnuncioController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Anuncios/Create');
+           $categorias = Categoria::all(['id', 'nombre']);
+    return Inertia::render('Anuncios/Create', [
+        'categorias' => $categorias
+    ]);
     }
 
     /**
@@ -72,6 +87,7 @@ class AnuncioController extends Controller
     public function store(Request $request)
     {
         // dd('Método store llamado', $request->all());
+        // Categoria::find($request->categoria_id);
         
        $validated=$request->validate([
             'articulo'=>'required|string|max:255',
@@ -81,6 +97,7 @@ class AnuncioController extends Controller
             'lugar'=>'required|string|max:255',
             'imagen'=>'required|array',
             'imagen.*'=>'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'categoria_id' => 'required|exists:categorias,id',
        ]);
 
        $validated['user_id']=Auth::id();
@@ -92,6 +109,7 @@ class AnuncioController extends Controller
         'cambio' => $validated['cambio'],
         'lugar' => $validated['lugar'],
         'user_id' => $validated['user_id'],
+        'categoria_id' => $validated['categoria_id'],
        ]);
 
        //opción varias imágenes
@@ -104,6 +122,7 @@ class AnuncioController extends Controller
                 'ruta' => $path,
             ]);
         }
+    
     }
 
     // dd($ruta);
@@ -114,7 +133,7 @@ class AnuncioController extends Controller
       //     'ruta'=>$request->file('imagen')->store('imagenes','public'),
       // ]);
     
-       return redirect()->route('anuncios.index')->with('flash','Anuncio creado con éxtio');
+       return redirect()->route('anuncios.index')->with('flash','Anuncio creado');
     }
 
     /**
@@ -134,6 +153,7 @@ class AnuncioController extends Controller
         'userLogin' => $userLogin,
         'comentarios' => $comentarios,
         // 'imagen' => $imagen,
+        'flash' => session('flash'),
     ]);
 }
 
@@ -165,12 +185,16 @@ class AnuncioController extends Controller
         
         $anuncio=Anuncio::findOrFail($id);
         
+         // AUTORIZACIÓN Solo el usuario que lo creo puede actualizarlo
+        //  $this->authorize('update', $anuncio);
+          
+        
         $anuncio->update($validated);
 
         //OPCION v1 (desde la vista de editar con formulario)
         // return redirect()->route('anuncios.index')->with('actualizado','Anuncio editado con éxito');
 
-        return back()->with('flash','Anuncio actualizado con éxito');
+        return back()->with('flash','Anuncio actualizado');
     }
     
     /**
@@ -179,6 +203,7 @@ class AnuncioController extends Controller
     public function destroy($id)
     {
         $anuncio=Anuncio::findOrFail($id);
+            // $this->authorize('delete', $anuncio);
         $anuncio->delete();
         
         return redirect()->route('anuncios.index')->with('flash','Anuncio eliminado');
@@ -205,5 +230,27 @@ class AnuncioController extends Controller
     // }
 
  
+   
+public function porCategoria($categoriaId)
+{
+    $anuncios = Anuncio::with('user', 'imagen', 'categoria')
+        ->where('categoria_id', $categoriaId)
+        ->orderBy('created_at', 'desc')
+        ->withCount('comentario', 'likes')
+        ->paginate(9);
+
+    $anuncios->getCollection()->transform(function ($anuncio) {
+        $anuncio->liked_by_user = $anuncio->likes->contains('user_id', Auth::id());
+        return $anuncio;
+    });
+
+    $userLogin = Auth::user();
+
+    return Inertia::render('Anuncios/Index', [
+        'anuncios' => $anuncios,
+        'userLogin' => $userLogin,
+        'flash' => session('flash'),
+    ]);
+}
     
 }

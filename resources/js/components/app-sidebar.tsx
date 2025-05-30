@@ -8,15 +8,20 @@ import { Badge, BookOpen, Circle, CirclePlus, Folder, LayoutGrid, LayoutList, Re
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
+    // {
+    //     title: 'Dashboard',
+    //     href: '/dashboard',
+    //     icon: LayoutGrid,
+    // },
     {
         title: 'Anuncios',
         href: '/anuncios',
         icon: ReceiptText,
+    },
+    {
+        title: 'Categorias',
+        href: '/categorias',
+        icon: LayoutGrid,
     },
     {
         title: 'Nuevo Anuncio',
@@ -33,13 +38,13 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        title: 'Repositorio',
+        href: 'https://github.com/romedsu/boneke_v1',
         icon: Folder,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits',
+        title: 'Documentación',
+        href: '#',
         icon: BookOpen,
     },
 ];

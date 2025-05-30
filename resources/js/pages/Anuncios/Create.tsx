@@ -5,16 +5,19 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 import { Card } from '@/components/ui/card';
 
-const Create = ({}) => {
+const Create = ({ categorias }: { categorias: { id: number; nombre: string }[] }) => {
     const { data, setData, post, processing, reset, errors } = useForm({
         articulo: '',
         valor: '',
         descripcion: '',
         cambio: '',
         lugar: '',
-        imagen:[] as File[],
+        imagen: [] as File[],
+        categoria_id: '',
     });
 
     const submit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,91 +38,118 @@ const Create = ({}) => {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Nuevo anuncio" />
+            <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col gap-4 rounded-xl p-4">
+                <Head title="Nuevo Anuncio" />
 
-            <Card>
-                <form onSubmit={submit} encType="multipart/form-data">
-                    <label>
-                        Articulo
-                        <Input
-                            value={data.articulo}
-                            onChange={(e) => setData('articulo', e.target.value)}
-                            type="text"
-                            className="m-2"
-                            placeholder="Artículo:"
-                            autoFocus
-                        />
-                        <InputError message={errors.articulo} />
-                    </label>
+                {/* HEADER */}
 
-                    <label>
-                        Valor
-                        <Input
-                            value={data.valor}
-                            onChange={(e) => setData('valor', e.target.value)}
-                            type="number"
-                            className="m-2"
-                            placeholder="Valor:"
-                            autoFocus
-                        />
-                        <InputError message={errors.valor} />
-                    </label>
+                <div className="flex w-full items-center justify-center text-4xl font-bold md:justify-start">
+                    <h1>NUEVO ANUNCIO</h1>
+                </div>
 
-                    <label>
-                        Descripción
-                        <Input
-                            value={data.descripcion}
-                            onChange={(e) => setData('descripcion', e.target.value)}
-                            type="text"
-                            className="m-2"
-                            placeholder="Descripcion:"
-                            autoFocus
-                        />
-                        <InputError message={errors.descripcion} />
-                    </label>
+                <Card className="m-auto flex w-[50rem] flex-col items-start justify-center px-10">
+                    <form onSubmit={submit} encType="multipart/form-data">
+                        <label>
+                            <span className="my-0"> Articulo</span>
+                            <Input
+                                value={data.articulo}
+                                onChange={(e) => setData('articulo', e.target.value)}
+                                type="text"
+                                className="mb-5"
+                                placeholder="Artículo:"
+                                autoFocus
+                            />
+                            <InputError message={errors.articulo} />
+                        </label>
+                        <label>
+                            Categoria
+                            <Select onValueChange={(value) => setData('categoria_id', value)} value={data.categoria_id}>
+                             
+                                <SelectTrigger className="mb-5 w-[180px]">
+                                    <SelectValue placeholder="Elige una" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Categorias</SelectLabel>
+                                        {categorias.map((categoria) => (
+                                            <SelectItem key={categoria.id} value={String(categoria.id)}>
+                                                {categoria.nombre}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </label>
 
-                    <label>
-                        Cambio por
-                        <Input
-                            value={data.cambio}
-                            onChange={(e) => setData('cambio', e.target.value)}
-                            type="text"
-                            className="m-2"
-                            placeholder="Cambio por:"
-                            autoFocus
-                        />
-                        <InputError message={errors.cambio} />
-                    </label>
+                        <label>
+                            Valor
+                            <Input
+                                value={data.valor}
+                                onChange={(e) => setData('valor', e.target.value)}
+                                type="number"
+                                className="mb-5"
+                                placeholder="Valor:"
+                                autoFocus
+                            />
+                            <InputError message={errors.valor} />
+                        </label>
 
-                    <label>
-                        Lugar
-                        <Input
-                            value={data.lugar}
-                            onChange={(e) => setData('lugar',e.target.value)}
-                            type="text"
-                            className="m-2"
-                            placeholder="Lugar:"
-                            autoFocus
-                        />
-                        <InputError message={errors.lugar} />
-                    </label>
+                        <label>
+                            Descripción
+                            <Input
+                                value={data.descripcion}
+                                onChange={(e) => setData('descripcion', e.target.value)}
+                                type="text"
+                                className="mb-5"
+                                placeholder="Descripcion:"
+                                autoFocus
+                            />
+                            <InputError message={errors.descripcion} />
+                        </label>
 
-                    <label>
-                        Imagen (obligatorio)
-                        <Input
-                            // value={data.imagen}
-                            onChange={(e) => setData('imagen',  e.target.files ? Array.from(e.target.files): [])}
-                            type="file"
-                            className="m-2"
-                           accept='image/*'
-                           multiple
-                        />
-                        <InputError message={errors.imagen} />
-                    </label>
+                        <label>
+                            Cambio por
+                            <Input
+                                value={data.cambio}
+                                onChange={(e) => setData('cambio', e.target.value)}
+                                type="text"
+                                className="mb-5"
+                                placeholder="Cambio por:"
+                                autoFocus
+                            />
+                            <InputError message={errors.cambio} />
+                        </label>
 
-                    <Button className="text-md mx-5 my-2 bg-amber-700 font-bold text-white">Publicar</Button>
-                </form>
-            </Card>
+                        <label>
+                            Lugar
+                            <Input
+                                value={data.lugar}
+                                onChange={(e) => setData('lugar', e.target.value)}
+                                type="text"
+                                className="mb-5"
+                                placeholder="Lugar:"
+                                autoFocus
+                            />
+                            <InputError message={errors.lugar} />
+                        </label>
+
+                        <label>
+                            Imagen (obligatorio)
+                            <Input
+                                // value={data.imagen}
+                                onChange={(e) => setData('imagen', e.target.files ? Array.from(e.target.files) : [])}
+                                type="file"
+                                className="mb-5"
+                                accept="image/*"
+                                multiple
+                            />
+                            <InputError message={errors.imagen} />
+                        </label>
+
+                        <Button className="text-md mx-5 my-2 bg-amber-700 font-bold text-white">Publicar</Button>
+                    </form>
+                </Card>
+            </div>
         </AppLayout>
     );
 };

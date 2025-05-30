@@ -11,6 +11,8 @@ import React, { useState } from 'react';
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
+import FlashMsj from '@/components/FlashMsj';
+
 const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any }> = ({ anuncio, userLogin, comentarios }) => {
     // console.log ('Anuncio:', anuncio);
     // console.log (anuncio.imagen[0]?.ruta);
@@ -27,7 +29,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any }> = ({
             href: '/anuncios',
         },
         {
-            title: `Anuncio ${anuncio.articulo}`,
+            title: `${anuncio.articulo}`,
             href: `/anuncios/${anuncio.id}`,
         },
     ];
@@ -37,6 +39,8 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any }> = ({
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={anuncio.articulo}></Head>
+
+            <FlashMsj />
 
             <div className="flex justify-center">
                 <Card key={anuncio.id} className="m-4 w-full max-w-[970px] bg-neutral-800 px-1">
@@ -90,7 +94,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any }> = ({
                             </form>
                         ) : (
                             <div>
-                                <CardTitle>Titulo: {anuncio.articulo}</CardTitle>
+                                <CardTitle> {anuncio.articulo}</CardTitle>
                                 <CardDescription>Valor: {anuncio.valor} €</CardDescription>
                                 <CardDescription>Descripcion: {anuncio.descripcion}</CardDescription>
 

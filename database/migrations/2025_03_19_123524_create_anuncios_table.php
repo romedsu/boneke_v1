@@ -21,6 +21,7 @@ return new class extends Migration
             // $table->decimal('price',7,2);
             // $table->integer('stock');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('categoria_id')->nullable()->constrained('categorias');
             $table->timestamps();
         });
     }

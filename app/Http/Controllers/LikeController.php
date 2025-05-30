@@ -56,6 +56,7 @@ class LikeController extends Controller
         $user = Auth::user();
         $like = Like::where('user_id', $user->id)->where('anuncio_id', $anuncioId)->first();
 
+    // JSON
     if ($like) {
         $like->delete();
         return response()->json(['liked' => false]);
@@ -63,6 +64,17 @@ class LikeController extends Controller
         Like::create(['user_id' => $user->id, 'anuncio_id' => $anuncioId]);
         return response()->json(['liked' => true]);
     }
+
+//INERTIA
+//   if ($like) {
+//         $like->delete();
+//         return redirect()->back()->with('flash', 'Dislike');
+//     } else {
+//         Like::create(['user_id' => $user->id, 'anuncio_id' => $anuncioId]);
+//         return redirect()->back()->with('flash', '¡Te gusta!');
+//     }
+
+
     }
 
     /**

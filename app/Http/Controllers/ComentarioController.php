@@ -23,6 +23,7 @@ class ComentarioController extends Controller
         return Inertia::render('Anuncios/Detalles/Comentarios', [
             'comentarios' => $comentarios,
             'userLogin' => $userLogin,
+            'flash'=>session('flash'),
         ]);
     }
 
@@ -55,7 +56,7 @@ class ComentarioController extends Controller
     //    ['id' => $validated['anuncio_id']])
     //     ->with('comentarioCreado', 'Comentario publicado');
 
-    return back()->with('comentarioCreado', 'Comentario publicado');
+    return back()->with('flash', 'Comentario publicado');
     }
 
     /**
@@ -91,7 +92,7 @@ class ComentarioController extends Controller
        $comentario=Comentario::findOrFail($id);
         
        $comentario->update($validated);
-       return back()->with('comentarioEditado', 'Comentario actualizado');
+       return back()->with('flash', 'Comentario actualizado');
     }
 
     /**
@@ -101,6 +102,6 @@ class ComentarioController extends Controller
     {
        $comentario=Comentario::findOrFail($id);
        $comentario->delete();
-         return back()->with('comentarioEliminado', 'Comentario eliminado');
+         return back()->with('flash', 'Comentario eliminado');
     }
 }

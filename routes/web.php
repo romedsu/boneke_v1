@@ -4,6 +4,7 @@ use App\Http\Controllers\AnuncioController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\CategoriaController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -26,17 +27,21 @@ use Inertia\Inertia;
 //             Route::get('/dashboard', [AnuncioController::class, 'dashboard'])->name('dashboard');
 //             Route::get('/', [AnuncioController::class, 'dashboard'])->name('home');
 // });
-
+    Route::get('/', [AnuncioController::class, 'index'])->name('home');
 Route::middleware(['auth', 'verified'])
         ->group(function () {
             Route::get('/dashboard', [AnuncioController::class, 'dashboard'])->name('dashboard');
-            Route::get('/', [AnuncioController::class, 'index'])->name('home');
+        
 });
 
+Route::get('/anuncios', [AnuncioController::class, 'index'])->name('anuncios.index');
 
 Route::resource('anuncios', AnuncioController::class)
-        ->only(['index','store','update','edit','destroy','show','create'])
+        ->only(['store','update','edit','destroy','show','create'])
         ->middleware(['auth']);
+
+        
+Route::get('/anuncios/categoria/{categoriaId}', [AnuncioController::class, 'porCategoria'])->name('anuncios.porCategoria');
 
         
 // Route::get('/create', [AnuncioController::class, 'create']);
@@ -58,6 +63,10 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
 
 Route::put('/likes/{anuncio}', [LikeController::class, 'update'])->middleware('auth');
+
+Route::resource('categorias', CategoriaController::class)
+        ->only(['index','show'])
+        ->middleware(['auth']);
    
 
 
