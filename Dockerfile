@@ -8,29 +8,28 @@ COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copia y resuelve dependencias PHP
+# Copia primero composer.json y composer.lock para aprovechar el cache de dependencias
 COPY composer.json composer.lock ./
-RUN composer install --prefer-dist --no-interaction
 
-# Copia el resto del backend
+# COPIA TODO EL RESTO DEL CÓDIGO ANTES DE COMPOSER INSTALL
 COPY . .
 
-# Instala dependencias y build del frontend
-WORKDIR /var/www/html/frontend
+# Ahora sí, composer install funcionará porque el archivo artisan ya existe
+RUN composer install --prefer-dist --no-interaction
 
-COPY frontend/package.json frontend/package-lock.json ./
+# Frontend (ajusta ruta si tu package.json está en /frontend)
+WORKDIR /var/www/html/frontend
 RUN npm install
-COPY frontend/. ./
 RUN npm run build
 
-# Copia los archivos generados por Vite a la carpeta pública de Laravel
+# Copia los assets generados a public/ (ajusta si usas otra carpeta)
 WORKDIR /var/www/html
 RUN cp -r frontend/dist/* public/
 
 # Permisos para Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# (Opcional) SQLite local para pruebas
+# SQLite para pruebas
 RUN mkdir -p database && touch database/database.sqlite && chmod -R 777 database
 
 EXPOSE 8000
