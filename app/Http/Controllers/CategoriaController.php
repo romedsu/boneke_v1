@@ -13,7 +13,10 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = Categoria::all();
-       return inertia('Categorias/Index',['categorias' => $categorias]);
+       return inertia('Categorias/Index',
+       ['categorias' => $categorias,
+        'titulo' => 'Categorias',
+    ]);
     }
 
     /**

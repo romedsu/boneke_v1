@@ -67,6 +67,7 @@ class AnuncioController extends Controller
             'anuncios' => $anuncios,
             'userLogin' => $userLogin,
             'flash' => session('flash'),
+            'titulo' => 'Anuncios',
         ]);
     }
 
@@ -230,7 +231,7 @@ class AnuncioController extends Controller
     // }
 
  
-   
+   //ANUNCIORS POR CATEGORÍA
 public function porCategoria($categoriaId)
 {
     $anuncios = Anuncio::with('user', 'imagen', 'categoria')
@@ -250,6 +251,66 @@ public function porCategoria($categoriaId)
         'anuncios' => $anuncios,
         'userLogin' => $userLogin,
         'flash' => session('flash'),
+    ]);
+}
+//MIS ANUNCIOS (anuncios del usuario logueado)
+public function misAnuncios()
+{
+    $anuncios = Anuncio::with('user', 'imagen', 'categoria')
+        ->where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc')
+        ->withCount('comentario', 'likes')
+        ->paginate(9);
+
+    return inertia('Anuncios/Index', [
+        'anuncios' => $anuncios,
+        'userLogin' =>Auth::id(),
+        'titulo' => 'Mis Anuncios',
+    ]);
+}
+
+//MIS LIKES (anuncios que le gustan al usuario logueado)
+public function misLikes()
+{
+    $anuncios = Anuncio::whereHas('likes', function ($query) {
+            $query->where('user_id', Auth::id());
+        })
+        ->with('user', 'imagen', 'categoria')
+        ->orderBy('created_at', 'desc')
+        ->withCount('comentario', 'likes')
+        ->paginate(9);
+
+    // Añade esta transformación:
+    $anuncios->getCollection()->transform(function ($anuncio) {
+        $anuncio->liked_by_user = true;
+        return $anuncio;
+    });
+
+    return inertia('Anuncios/Index', [
+        'anuncios' => $anuncios,
+        'userLogin' => Auth::user(),
+        'titulo' => 'Favoritos',
+    ]);
+}
+
+public function updateLike(Anuncio $anuncio)
+{
+    $user = Auth::user();
+    $liked = $anuncio->likes()->where('user_id', $user->id)->exists();
+
+    if ($liked) {
+        $anuncio->likes()->where('user_id', $user->id)->delete();
+    } else {
+        $anuncio->likes()->create(['user_id' => $user->id]);
+    }
+
+    // Refresca los datos del anuncio
+    $anuncio->loadCount('likes');
+    $anuncio->liked_by_user = !$liked;
+
+    return response()->json([
+        'anuncio' => $anuncio,
+        'liked' => !$liked,
     ]);
 }
     

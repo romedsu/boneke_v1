@@ -4,8 +4,9 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Badge, BookOpen, Circle, CirclePlus, Folder, LayoutGrid, LayoutList, Receipt, ReceiptText } from 'lucide-react';
+import { BookOpen, CirclePlus, Folder, Heart, LayoutGrid, ReceiptText,User,CornerDownRight } from 'lucide-react';
 import AppLogo from './app-logo';
+import { usePage } from '@inertiajs/react';
 
 const mainNavItems: NavItem[] = [
     // {
@@ -14,14 +15,14 @@ const mainNavItems: NavItem[] = [
     //     icon: LayoutGrid,
     // },
     {
-        title: 'Anuncios',
-        href: '/anuncios',
-        icon: ReceiptText,
-    },
-    {
         title: 'Categorias',
         href: '/categorias',
         icon: LayoutGrid,
+    },
+    {
+        title: 'Anuncios',
+        href: '/anuncios',
+        icon: ReceiptText,
     },
     {
         title: 'Nuevo Anuncio',
@@ -29,11 +30,20 @@ const mainNavItems: NavItem[] = [
         icon: CirclePlus,
     },
     {
-        title: 'Contacto',
-        href: '/contacto',
-        icon: ReceiptText,
+        title: 'Mis Anuncios',
+        href: '/mis-anuncios',
+        icon: CornerDownRight ,
     },
-  
+    {
+        title: 'Favoritos',
+        href: '/mis-likes',
+        icon: Heart,
+    },
+    // {
+    //     title: 'Contacto',
+    //     href: '/contacto',
+    //     icon: ReceiptText,
+    // },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -50,13 +60,13 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+     const { auth } = usePage().props as { auth?: { user?: any } };
     return (
-        <Sidebar collapsible="icon" variant="sidebar"
-        >
+        <Sidebar collapsible="icon" variant="sidebar">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton className='bg-amber-700' size="lg" asChild>
+                        <SidebarMenuButton className="bg-amber-700" size="lg" asChild>
                             <Link href="/" prefetch>
                                 <AppLogo />
                             </Link>
@@ -70,8 +80,24 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
+                
                 <NavFooter items={footerNavItems} className="mt-auto" />
-                <NavUser />
+                
+                {/* si no hay usuario logueado */}
+                {auth?.user ? (
+                    <NavUser />
+                ) : (
+                    <div className="p-4 text-center">
+                        <Link href="/login" className=" flex mb-1 bg-amber-700 text-neutral-200 p-1 justify-center rounded-md font-bold border border-transparent hover:bg-transparent  hover:border hover:border-amber-700">
+                            <User className='w-5 mr-2'/>
+                            Iniciar sesión
+                        </Link>
+                        <Link href="/register" className=" flex  text-amber p-2 justify-center rounded-md font-medium hover:bg-transparent hover:text-amber-700">
+                            {/* <User className='w-5 mr-2'/> */}
+                            Registrarse
+                        </Link>
+                    </div>
+                )}
             </SidebarFooter>
         </Sidebar>
     );

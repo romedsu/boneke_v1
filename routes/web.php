@@ -27,21 +27,32 @@ use Inertia\Inertia;
 //             Route::get('/dashboard', [AnuncioController::class, 'dashboard'])->name('dashboard');
 //             Route::get('/', [AnuncioController::class, 'dashboard'])->name('home');
 // });
-    Route::get('/', [AnuncioController::class, 'index'])->name('home');
+    
+Route::get('/', [AnuncioController::class, 'index'])->name('home');
+
 Route::middleware(['auth', 'verified'])
         ->group(function () {
             Route::get('/dashboard', [AnuncioController::class, 'dashboard'])->name('dashboard');
         
 });
 
+//index anuncios para no logueados
 Route::get('/anuncios', [AnuncioController::class, 'index'])->name('anuncios.index');
 
+//ANUNCIOS
 Route::resource('anuncios', AnuncioController::class)
         ->only(['store','update','edit','destroy','show','create'])
         ->middleware(['auth']);
 
+//ACTUALIZAR LIKE
+Route::put('/anuncios/{anuncio}/like', [AnuncioController::class, 'updateLike'])->middleware('auth');
         
 Route::get('/anuncios/categoria/{categoriaId}', [AnuncioController::class, 'porCategoria'])->name('anuncios.porCategoria');
+
+Route::get('/mis-anuncios', [AnuncioController::class, 'misAnuncios'])->name('anuncios.misAnuncios')->middleware('auth');
+
+Route::get('/mis-likes', [AnuncioController::class, 'misLikes'])->name('anuncios.misLikes')->middleware('auth');
+
 
         
 // Route::get('/create', [AnuncioController::class, 'create']);

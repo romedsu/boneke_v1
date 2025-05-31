@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 import { Card } from '@/components/ui/card';
 
-const Create = ({ categorias }: { categorias: { id: number; nombre: string }[] }) => {
+const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: string }> = ({ categorias, titulo = 'Nuevo Anuncio' }) => {
     const { data, setData, post, processing, reset, errors } = useForm({
         articulo: '',
         valor: '',
@@ -38,16 +38,17 @@ const Create = ({ categorias }: { categorias: { id: number; nombre: string }[] }
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col gap-4 rounded-xl p-4">
+            <div className="flex m-5 h-full max-w-7xl flex-1 flex-col rounded-xl p-4">
                 <Head title="Nuevo Anuncio" />
 
                 {/* HEADER */}
 
                 <div className="flex w-full items-center justify-center text-4xl font-bold md:justify-start">
-                    <h1>NUEVO ANUNCIO</h1>
+                    <h1>{titulo}</h1>
                 </div>
 
-                <Card className="m-auto flex w-[50rem] flex-col items-start justify-center px-10">
+                <Card className="mx-auto w-full max-w-4xl items-start justify-centerpx-10 sm:px-10">
+                    {' '}
                     <form onSubmit={submit} encType="multipart/form-data">
                         <label>
                             <span className="my-0"> Articulo</span>
@@ -64,7 +65,6 @@ const Create = ({ categorias }: { categorias: { id: number; nombre: string }[] }
                         <label>
                             Categoria
                             <Select onValueChange={(value) => setData('categoria_id', value)} value={data.categoria_id}>
-                             
                                 <SelectTrigger className="mb-5 w-[180px]">
                                     <SelectValue placeholder="Elige una" />
                                 </SelectTrigger>
