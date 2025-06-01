@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { CalendarDays, LayoutGrid, LucidePenBox, Trash2, UserPen } from 'lucide-react';
+import { ArrowRightLeft, CalendarDays, Heart, LayoutGrid, LucidePenBox, MapPin, MessageCircleMore, PiggyBank, Trash2, UserPen } from 'lucide-react';
 
 import React, { useState } from 'react';
 
@@ -11,6 +11,27 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import FlashMsj from '@/components/FlashMsj';
+
+import { Inertia } from '@inertiajs/inertia';
+import Comentarios from './Comentarios';
+
+const getToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+
+const updateLike = async (anuncioId: number) => {
+    try {
+        await fetch(`/anuncios/${anuncioId}/like`, {
+            method: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': getToken(),
+                'Content-Type': 'application/json',
+            },
+        });
+
+        Inertia.reload({ only: ['anuncio'] });
+    } catch (error) {
+        console.error('Error al dar like:', error);
+    }
+};
 
 const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; categorias: any }> = ({ anuncio, userLogin, comentarios, categorias }) => {
     // console.log ('Anuncio:', anuncio);
@@ -52,7 +73,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                 <div className="flex justify-center">
                     <Card
                         key={anuncio.id}
-                        className={`m-auto w-[50rem] bg-neutral-800 px-1 ${
+                        className={`mx-auto w-full max-w-3xl bg-neutral-800 px-5 py-4 ${
                             editable === anuncio.id ? 'border border-amber-600' : 'border border-transparent'
                         }`}
                     >
@@ -187,12 +208,12 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                 //  -----------------<FIN EDITAR>-----------------
                                 <div>
                                     {/* TITULO */}
-                                    <CardTitle className="mt-1.5 font-semibold transition duration-400 hover:text-amber-600">
+                                    <CardTitle className="m-1 mb-3 text-center text-3xl font-semibold transition duration-400 hover:text-amber-600">
                                         {anuncio.articulo}
                                     </CardTitle>
                                     <CardDescription className="mb-2 flex justify-between gap-5">
                                         {/* categoria anuncio */}
-                                        <div className="flex items-center gap-1">
+                                        <div className="flex items-center gap-1 text-lg">
                                             <LayoutGrid className="w-4" />
                                             <a
                                                 className="cursor-pointer font-semibold text-amber-600 hover:text-neutral-100"
@@ -222,8 +243,8 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                             </div>
                                         </div>
                                     </CardDescription>
-                                    <CardDescription>Valor: {anuncio.valor} €</CardDescription>
-                                    <CardDescription>Descripcion: {anuncio.descripcion}</CardDescription>
+
+                                    <CardDescription className="text-justify text-neutral-200">{anuncio.descripcion}</CardDescription>
 
                                     {/* 1 IMAGEN */}
                                     {/* {anuncio.imagen.map((img: any, index: any) => (
@@ -232,38 +253,125 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
 
                                     {/* CARRUSEL IMAGENES */}
                                     {anuncio.imagen && anuncio.imagen.length > 0 && (
-                                        <Carousel className="w-full max-w-xs">
-                                            <CarouselContent>
-                                                {anuncio.imagen.map((img: any, index: number) => (
-                                                    <CarouselItem key={index}>
-                                                        <div className="p-1">
-                                                            <Card>
-                                                                <CardContent className="flex aspect-square items-center justify-center p-6">
-                                                                    <img
-                                                                        src={`/storage/${img.ruta}`}
-                                                                        alt={`Imagen ${index + 1}`}
-                                                                        className="h-auto w-full"
-                                                                    />
-                                                                </CardContent>
+                                        <div className="grid grid-cols-1 md:grid-cols-3">
+                                            <Carousel className="col-span-2 mx-auto w-full max-w-sm">
+                                                <CarouselContent>
+                                                    {anuncio.imagen.map((img: any, index: number) => (
+                                                        <CarouselItem className="" key={index}>
+                                                            <div>
+                                                                {/* aqui color */}
+                                                                <Card className="mx-auto justify-center p-3">
+                                                                    <CardContent className="flex aspect-square items-center justify-center p-0 md:p-2">
+                                                                        <img
+                                                                            src={`/storage/${img.ruta}`}
+                                                                            alt={`Imagen ${index + 1}`}
+                                                                            className="h-auto w-full rounded-lg"
+                                                                        />
+                                                                    </CardContent>
 
-                                                                <span>{anuncio.imagen.length}</span>
-                                                            </Card>
+                                                                    {/* <span>{anuncio.imagen.length}</span> */}
+                                                                </Card>
+                                                            </div>
+                                                        </CarouselItem>
+                                                    ))}
+                                                </CarouselContent>
+                                                {anuncio.imagen.length > 1 && (
+                                                    <div>
+                                                        <CarouselPrevious />
+                                                        <CarouselNext />
+                                                    </div>
+                                                )}
+                                            </Carousel>
+
+                                            <CardDescription className="flex flex-col items-center justify-center gap-1 md:gap-5">
+                                                <div className="flex w-full items-center justify-between  md:flex-col md:items-end">
+                                                    {/* LUGAR */}
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="flex items-center gap-1">
+                                                            <MapPin className="h-5 w-5 md:h-6 md:w-6" />
+                                                            <span className="text-lg font-semibold text-neutral-200 md:text-xl">
+                                                                {' '}
+                                                                {anuncio.lugar}
+                                                            </span>
                                                         </div>
-                                                    </CarouselItem>
-                                                ))}
-                                            </CarouselContent>
-                                            {anuncio.imagen.length > 1 && (
-                                                <div>
-                                                    <CarouselPrevious />
-                                                    <CarouselNext />
+                                                    </div>
+                                                    {/* VALOR */}
+                                                    <div className="flex items-center gap-1">
+                                                        <div className="flex items-center gap-2">
+                                                            <PiggyBank className="h-7 w-7 md:h-10 md:w-10" />
+                                                            <span className="text-2xl font-semibold text-amber-600 md:text-4xl">
+                                                                {' '}
+                                                                {anuncio.valor} €
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            )}
-                                        </Carousel>
-                                    )}
 
-                                    <CardDescription>
-                                        <p>Nº de comentarios: {comentarios.length}</p>
-                                    </CardDescription>
+                                                {/* CAMBIO */}
+                                                <div className="flex items-center gap-2">
+                                                    <div className="flex items-center gap-1">
+                                                        <ArrowRightLeft className="h-5 w-5 md:h-6 md:w-6" />
+                                                        <span className="text-lg font-semibold text-amber-600 md:text-xl"> {anuncio.cambio}</span>
+                                                    </div>
+                                                </div>
+
+                                                {/* EDITAR Y BORRAR */}
+                                                {/* solo si el usuario logueado es el autor del anuncio o admin */}
+                                                <CardFooter className="my-1 w-full  flex gap-10 items-center justify-between border-t px-4 py-1 md:flex-col">
+                                                    <div className="flex  items-center  gap-4">
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                updateLike(anuncio.id);
+                                                            }}
+                                                            className="flex cursor-pointer items-center gap-1 border-none bg-transparent p-0"
+                                                        >
+                                                            <Heart
+                                                                className={`h-5.5 w-5.5 transition-transform duration-200 ${
+                                                                    anuncio.liked_by_user
+                                                                        ? 'fill-red-400 text-red-400 hover:scale-105'
+                                                                        : 'text-gray-400 hover:scale-105 hover:text-red-400'
+                                                                }`}
+                                                            />
+                                                            <span className="text-md">{anuncio.likes_count}</span>
+                                                        </button>
+
+                                                        {/* contador comentarios */}
+                                                        <div className="flex items-center gap-1 text-neutral-400">
+                                                            <MessageCircleMore className="h-5 w-5 text-gray-400" />
+                                                            <span className="text-md text-neutral-200">{anuncio.comentario_count}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex gap-4 ju">
+                                                        {/* equivale a IF */}
+                                                        {(userLogin?.id === anuncio.user.id || userLogin.is_admin == true) &&
+                                                            editable !== anuncio.id && (
+                                                                <>
+                                                                    <Button
+                                                                        onClick={() => setEditable(anuncio.id)}
+                                                                        className="flex h-10 w-10 items-center justify-center rounded-full border border-transparent bg-amber-700 font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent"
+                                                                    >
+                                                                        <LucidePenBox />
+                                                                    </Button>
+
+                                                                    <form method="POST" action={route('anuncios.destroy', anuncio.id)}>
+                                                                        <input type="hidden" name="_token" value={token} />
+
+                                                                        <input type="hidden" name="_method" value="DELETE" />
+                                                                        <Button
+                                                                            type="submit"
+                                                                            className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-700 bg-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-red-800 hover:bg-red-800"
+                                                                        >
+                                                                            <Trash2 />
+                                                                        </Button>
+                                                                    </form>
+                                                                </>
+                                                            )}
+                                                    </div>
+                                                </CardFooter>
+                                            </CardDescription>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </CardHeader>
@@ -271,30 +379,12 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                         {/* <CardContent>
                         <CardDescription>Descripcion: {anuncio.descripcion}</CardDescription>
                     </CardContent> */}
-                        <CardFooter className="flex justify-start gap-4">
-                            {userLogin?.id === anuncio.user.id && editable !== anuncio.id && (
-                                <>
-                                    <Button onClick={() => setEditable(anuncio.id)} className="p-3">
-                                        <LucidePenBox />
-                                    </Button>
-
-                                    <form method="POST" action={route('anuncios.destroy', anuncio.id)}>
-                                        <input type="hidden" name="_token" value={token} />
-
-                                        <input type="hidden" name="_method" value="DELETE" />
-                                        <Button type="submit" className="p-3">
-                                            <Trash2 />
-                                        </Button>
-                                    </form>
-                                </>
-                            )}
-                        </CardFooter>
                     </Card>
                 </div>
             </div>
 
             {/* Al componente Comentarios se le pasan 3 parametros */}
-            {/* <Comentarios comentarios={comentarios} anuncio_id={anuncio.id} userLogin={userLogin} /> */}
+            <Comentarios comentarios={comentarios} anuncio_id={anuncio.id} userLogin={userLogin} />
         </AppLayout>
     );
 };

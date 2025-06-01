@@ -16,7 +16,6 @@ class CategoriaSeeder extends Seeder
          $categorias = [
             'Electrónica',
             'Vehículos',
-            'Inmuebles',
             'Moda',
             'Deportes',
             'Hogar',
@@ -28,12 +27,18 @@ class CategoriaSeeder extends Seeder
             'Informática',
             'Servicios',
             'Empleo',
-            'Viajes',
             'Salud',
             'Belleza',
             'Arte',
             'Coleccionismo',
             'Alimentación',
+            'Muebles',
+            'Fotografía',
+            'Infantil',
+            'Transporte',
+            'Juegos',
+            'Videojuegos',
+            'Electrodomésticos',
         ];
 
          foreach ($categorias as $nombre) {

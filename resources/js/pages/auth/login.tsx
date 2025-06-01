@@ -41,6 +41,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
     return (
         <AuthLayout title="Inicia sesión en Boneke" description="">
+            
             <Head title="Inicio de sesión" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>

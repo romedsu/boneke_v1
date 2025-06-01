@@ -76,7 +76,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 Route::put('/likes/{anuncio}', [LikeController::class, 'update'])->middleware('auth');
 
 Route::resource('categorias', CategoriaController::class)
-        ->only(['index','show'])
+        ->only(['index','show','store','destroy'])
         ->middleware(['auth']);
    
 

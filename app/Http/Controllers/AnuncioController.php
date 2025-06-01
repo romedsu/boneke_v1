@@ -144,9 +144,13 @@ class AnuncioController extends Controller
      */
     public function show($id)
 {
-    $anuncio = Anuncio::with('user','imagen','categoria')->findOrFail($id);
+    $anuncio = Anuncio::with('user','imagen','categoria')
+    ->withCount('comentario','likes')
+    ->findOrFail($id);
     $userLogin = Auth::user();
 
+     $anuncio->liked_by_user = $anuncio->likes->contains('user_id', Auth::id());
+     
     $comentarios=Comentario::where('anuncio_id',$id)->with('user')->get();
     $categorias = Categoria::all(['id', 'nombre']);
 

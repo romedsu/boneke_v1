@@ -5,6 +5,12 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Anuncio;
+use App\Models\Categoria;
+use App\Models\User;
+use App\Models\Imagen;
+use Faker\Factory as Faker;
+
+use Illuminate\Support\Facades\Hash;
 
 class AnuncioSeeder extends Seeder
 {
@@ -15,10 +21,112 @@ class AnuncioSeeder extends Seeder
     {
         // Anuncio::factory(20)->create();
 
-       Anuncio::factory(20)->create()->each(function ($anuncio) {
-            $anuncio->imagen()->create([
-                'ruta' => 'imagenes/cat_' . rand(1, 10) . '.jpg',
+    //    Anuncio::factory(20)->create()->each(function ($anuncio) {
+    //         $anuncio->imagen()->create([
+    //             'ruta' => 'imagenes/cat_' . rand(1, 10) . '.jpg',
+    //         ]);
+    //     });
+
+
+
+    $faker = Faker::create();
+
+ $articulosCategorias = [
+            'Bicicleta de montaña' => 'Deportes',
+            'Teléfono móvil' => 'Electrónica',
+            'Clases de inglés' => 'Servicios',
+            'Silla de oficina'=> 'Muebles',
+            'Cámara réflex' => 'Fotografía',
+            'Mesa de comedor' => 'Muebles',
+            'Alfombra persa' => 'Hogar',
+            'Guitarra eléctrica' => 'Música',
+            'Aspiradora' => 'Electrodomésticos',
+            'Impresora láser' => 'Informática',
+            'Caja de naranjas' => 'Alimentación',
+            'Cuidado de niños' => 'Servicios',
+            'Moneda antigua' => 'Coleccionismo',
+            'Sofá de tres plazas' => 'Muebles',
+            'Reloj' => 'Moda',
+            'Portátil Lenovo' => 'Informática',
+            'Microondas'=> 'Electrodomésticos',
+            'Cochecito de bebé' => 'Infantil',
+            'PlayStation 4' => 'Videojuegos',
+            'Coche teledirigido' => 'Juguetes',
+            'Tablet Samsung' => 'Electrónica',
+            'Transportín para gatos' => 'Mascotas',
+            'Patinete eléctrico' => 'Transporte',
+            'Juego de mesa' => 'Juegos',
+            'Cámara de acción' => 'Fotografía',
+            'Cafetera espresso' => 'Electrodomésticos',
+            'Libro de cocina' => 'Libros',
+            'Altavoz Bluetooth'=> 'Electrónica',
+            
+            'Chaqueta de cuero' => 'Moda',
+            'Nintendo Switch' => 'Videojuegos',
+            'Lámpara de mesa' => 'Hogar',
+            'Collar de perro' => 'Mascotas',
+            'Muñeca articulada' => 'Juguetes',
+            'Lavadora'=> 'Electrodomésticos',
+            'Reparaciones' => 'Servicios',
+            'Bolso de mano' => 'Moda',
+            'Televisor LED'=> 'Electrónica',
+            'Tablet'=> 'Electrónica',
+            'Tensiómetro digital' => 'Salud',
+            
+            'Cromos de fútbol' => 'Coleccionismo',
+            'Patatas' => 'Alimentación',
+            'Zapatillas ' => 'Moda',
+            'Trona' => 'Infantil',
+            'Puzzle 1000 piezas' => 'Juegos',
+        ];
+
+        // $user = User::first(); 
+
+        foreach ($articulosCategorias as $articulo => $categoriaNombre) {
+                //  $articulo = $faker->randomElement(array_keys($articulosCategorias));
+                 
+            $categoria = Categoria::where('nombre', $categoriaNombre)->first();
+
+            //Excepto admin
+            $user = User::where('is_admin', false)->inRandomOrder()->first();
+
+                $cambio = $faker->randomElement(array_keys($articulosCategorias));
+
+
+               
+               $anuncio =  Anuncio::create([
+                   'articulo' => $articulo,
+                   'valor' => rand(10, 2000),
+                   'descripcion' => $faker->realText(200),
+                //    'cambio' => $faker->randomElement(['No', 'Sí', 'A negociar']),
+                   'cambio' => $cambio,
+                   'lugar' => $faker->city(),
+                   'user_id' => $user->id,
+                   'categoria_id' => $categoria?->id,
+                   
+                ]);
+
+
+                // Obtener la primera palabra del artículo, quitar espacios y pasar a minúsculas
+                // $imagen = strtolower(str_replace(' ', '', explode(' ', $articulo)[0])) . '.jpg';
+
+
+                $imagen = explode(' ', $articulo)[0];
+                $imagen = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $imagen));
+                $imagen = preg_replace('/[^a-z0-9]/', '', $imagen);
+                
+            Imagen::create([
+                'anuncio_id' => $anuncio->id,
+                // 'ruta' => 'imagenes/'.$imagen ,
+                'ruta' => 'imagenes/'.$imagen . '.jpg',
             ]);
-        });
+
+
+
+
+        }
+
+
+
     }
 }

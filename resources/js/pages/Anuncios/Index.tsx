@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { CalendarDays, Heart, MessageCircleMore, Trash2, UserPen,LayoutGrid } from 'lucide-react';
+import { CalendarDays, Heart, LayoutGrid, MessageCircleMore, Trash2, UserPen } from 'lucide-react';
 
 import { Link } from '@inertiajs/react';
 
@@ -133,13 +133,12 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
             <FlashMsj />
 
             <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col gap-4 rounded-xl p-4">
-                <Head title="Anuncios"/>
+                <Head title="Anuncios" />
 
                 {/* HEADER */}
                 <div className="m-4 flex flex-col items-center justify-end gap-2 md:flex-row">
-
                     {/* TITULO pagina*/}
-                    <div className="flex w-full items-center justify-center text-4xl font-bold  md:justify-start">
+                    <div className="flex w-full items-center justify-center text-4xl font-bold md:justify-start">
                         <h1>{titulo ?? 'Boneke'}</h1>
                     </div>
 
@@ -158,48 +157,40 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                             onClick={() => (window.location.href = route('anuncios.show', anuncio.id))}
                         >
                             <CardHeader>
-                                <CardTitle className="font-semibold transition duration-400 hover:text-amber-600 mt-1.5 ">
+                                <CardTitle className="mt-1.5 font-semibold transition duration-400 hover:text-amber-600">
                                     {limitarPalabras(anuncio.articulo, 3)}
                                 </CardTitle>
 
-
-                                <CardDescription className="flex justify-between gap-5  mb-2">
-                                    
-                                        {/* categoria anuncio */}
-                                    <div className= "flex items-center gap-1" >
-                                        <LayoutGrid className="w-4" />
-                                    <a
-                                        className="cursor-pointer text-amber-600 hover:text-neutral-100 font-semibold"
-                                        onClick={(e) => {
-                                            // evitar que el click afecte al card(que el link lleve al anuncio)
-                                            e.stopPropagation();
-                                            window.location.href = route('anuncios.porCategoria', anuncio.categoria.id);
-                                        }}
-                                    >
-                                        {/* {anuncio.categoria.nombre} */}
-                                        {anuncio.categoria ? anuncio.categoria.nombre : 'Sin categoría'}
-                                    </a>
-                                    </div>
-                                    <div className='flex items-center gap-3'>
-
-
-                                        {/* autor */}
+                                <CardDescription className="mb-2 flex justify-between gap-5">
+                                    {/* categoria anuncio */}
                                     <div className="flex items-center gap-1">
-                                        <UserPen className="w-4" />
-                                        <span className="font-semibold text-amber-600">{anuncio.user.name}</span>
+                                        <LayoutGrid className="w-4" />
+                                        <a
+                                            className="cursor-pointer font-semibold text-amber-600 hover:text-neutral-100"
+                                            onClick={(e) => {
+                                                // evitar que el click afecte al card(que el link lleve al anuncio)
+                                                e.stopPropagation();
+                                                window.location.href = route('anuncios.porCategoria', anuncio.categoria.id);
+                                            }}
+                                        >
+                                            {/* {anuncio.categoria.nombre} */}
+                                            {anuncio.categoria ? anuncio.categoria.nombre : 'Sin categoría'}
+                                        </a>
                                     </div>
+                                    <div className="flex items-center gap-3">
+                                        {/* autor */}
+                                        <div className="flex items-center gap-1">
+                                            <UserPen className="w-4" />
+                                            <span className="font-semibold text-amber-600">{anuncio.user.name}</span>
+                                        </div>
 
                                         {/* fecha */}
-                                    <div className="flex items-center gap-1">
-                                        <CalendarDays className="w-4" />
-                                        <span className="font-medium text-amber-600">{new Date(anuncio.created_at).toLocaleDateString()}</span>
+                                        <div className="flex items-center gap-1">
+                                            <CalendarDays className="w-4" />
+                                            <span className="font-medium text-amber-600">{new Date(anuncio.created_at).toLocaleDateString()}</span>
+                                        </div>
                                     </div>
-                                    </div>
-
-
                                 </CardDescription>
-
-                            
                             </CardHeader>
 
                             <CardContent>
@@ -229,30 +220,38 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                                         className="flex cursor-pointer items-center gap-1 border-none bg-transparent p-0"
                                     >
                                         <Heart
-                                            className={`h-6 w-6 transition-transform duration-200 ${
+                                            className={`h-5.5 w-5.5 transition-transform duration-200 ${
                                                 anuncio.liked_by_user
                                                     ? 'fill-red-400 text-red-400 hover:scale-105'
-                                                    : 'text-gray-500 hover:scale-105 hover:text-red-400'
+                                                    : 'text-gray-400 hover:scale-105 hover:text-red-400'
                                             }`}
                                         />
-                                        <span className="text-xs">{anuncio.likes_count}</span>
+                                        <span className="text-md">{anuncio.likes_count}</span>
                                     </button>
 
                                     {/* contador comentarios */}
-                                    <div className="flex items-center gap-1 text-neutral-500">
-                                        <MessageCircleMore className="h-5 w-5" />
-                                        <span className="text-xs">{anuncio.comentario_count}</span>
+                                    <div className="flex items-center gap-1 text-neutral-400">
+                                        <MessageCircleMore className="h-5 w-5 text-gray-400 " />
+                                        <span className="text-md text-neutral-200">{anuncio.comentario_count}</span>
                                     </div>
                                 </div>
 
                                 {/* BORRAR */}
-                                <div className="flex gap-2">
-                                    {userLogin && userLogin.id === anuncio.user.id && (
+                                {/* solo usuario que lo ah creado y admin */}
+                                <div className="flex gap-4">
+                                    {/* equivale a IF */}
+                                    {userLogin && (userLogin.id === anuncio.user.id || userLogin.is_admin==true) && (
                                         <form method="POST" action={route('anuncios.destroy', anuncio.id)}>
                                             <input type="hidden" name="_token" value={getToken()} />
                                             <input type="hidden" name="_method" value="DELETE" />
 
-                                            <Button type="submit" size="icon" variant="ghost" className='rounded-2xl border border-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent hover:cursor-pointer'>
+                                            <Button
+                                                type="submit"
+                                                size="icon"
+                                                variant="ghost"
+                                                //  className='rounded-2xl border border-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent hover:cursor-pointer'
+                                                className="flex h-8 w-8 items-center justify-center rounded-full border border-amber-700 bg-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-red-800 hover:bg-red-800"
+                                            >
                                                 <Trash2 className="h-5 w-5" />
                                             </Button>
                                         </form>

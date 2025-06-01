@@ -52,11 +52,11 @@ const footerNavItems: NavItem[] = [
         href: 'https://github.com/romedsu/boneke_v1',
         icon: Folder,
     },
-    {
-        title: 'Documentación',
-        href: '#',
-        icon: BookOpen,
-    },
+    // {
+    //     title: 'Documentación',
+    //     href: '#',
+    //     icon: BookOpen,
+    // },
 ];
 
 export function AppSidebar() {

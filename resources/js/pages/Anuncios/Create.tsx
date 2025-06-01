@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 import { Card } from '@/components/ui/card';
 
+import AppLogoIcon from '@/components/app-logo-icon';
+
 const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: string }> = ({ categorias, titulo = 'Nuevo Anuncio' }) => {
     const { data, setData, post, processing, reset, errors } = useForm({
         articulo: '',
@@ -38,7 +40,7 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <div className="flex m-5 h-full max-w-7xl flex-1 flex-col rounded-xl p-4">
+            <div className="m-5 flex h-full max-w-7xl flex-1 flex-col rounded-xl p-4">
                 <Head title="Nuevo Anuncio" />
 
                 {/* HEADER */}
@@ -47,8 +49,11 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
                     <h1>{titulo}</h1>
                 </div>
 
-                <Card className="mx-auto w-full max-w-4xl items-start justify-centerpx-10 sm:px-10">
+                <Card className="justify-centerpx-10 mx-auto w-full max-w-4xl items-start border border-amber-600 sm:px-10">
                     {' '}
+                    <div className="m-auto flex h-20 w-20 items-center justify-center rounded-full bg-neutral-100 p-5 mb-5">
+                        <AppLogoIcon className="w-17 fill-current text-[var(--foreground)] dark:text-white" />
+                    </div>
                     <form onSubmit={submit} encType="multipart/form-data">
                         <label>
                             <span className="my-0"> Articulo</span>

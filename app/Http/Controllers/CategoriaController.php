@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
@@ -13,9 +15,13 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = Categoria::all();
+
+        $userLogin = Auth::user();
        return inertia('Categorias/Index',
        ['categorias' => $categorias,
         'titulo' => 'Categorias',
+        'userLogin' => $userLogin,
+        'flash' => session('flash'),
     ]);
     }
 
@@ -32,7 +38,11 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+        Categoria::create($validatedData);
+        return redirect()->route('categorias.index')->with('flash', 'Categoría creada');
     }
 
     /**
@@ -62,8 +72,10 @@ class CategoriaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categoria $categoria)
+    public function destroy($id)
     {
-        //
+        $categoria= Categoria::findOrFail($id);
+        $categoria->delete();
+        return redirect()->route('categorias.index')->with('flash', 'Categoría eliminada');
     }
 }

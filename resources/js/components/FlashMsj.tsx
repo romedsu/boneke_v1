@@ -7,7 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const FlashMsj = () => {
     //FEEDBACK FLASH - react-toastify
       const { flash } = usePage().props as { flash?: string };
-    //   console.log('Mensaje flash recibido:', flash);
+      console.log('Mensaje flash recibido:', flash);
+    
 
     useEffect(() => {
         if (flash) {
