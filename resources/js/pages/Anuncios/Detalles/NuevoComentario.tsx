@@ -15,7 +15,7 @@ const NuevoComentario: React.FC<{anuncio_id:number}> = ({anuncio_id}) => {
         anuncio_id: anuncio_id || 0,
     });
 
-    const submit = (e) => {
+    const submit = (e:any) => {
         e.preventDefault();
         post(route('comentarios.store'), { onSuccess: () => reset() });
     };
@@ -24,7 +24,7 @@ const NuevoComentario: React.FC<{anuncio_id:number}> = ({anuncio_id}) => {
         <div >
             <h1>NUEVO COMENTARIO</h1>
             <div className='flex justify-center'>
-            <Card className='m-4 w-full max-w-[970px]'>
+            <Card className='m-4 w-full max-w-[50rem]'>
                 <form onSubmit={submit} >
                     <label className="flex flex-col">
                         Añade tu comentario :
@@ -49,7 +49,7 @@ const NuevoComentario: React.FC<{anuncio_id:number}> = ({anuncio_id}) => {
 
 
                     <div className="flex justify-end">
-                        <Button disabled={processing} className="text-md mx-0 mt-5 bg-amber-700 font-bold text-white ">Comentar</Button>
+                        <Button disabled={processing} className="text-md mx-0 mt-5 bg-amber-700 font-bold text-white rounded-3xl ">Comentar</Button>
                     </div>
                 </form>
             </Card>

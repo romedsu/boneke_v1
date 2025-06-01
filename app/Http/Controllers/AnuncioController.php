@@ -9,6 +9,7 @@ use App\Models\Categoria;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 use Inertia\Inertia;
 
@@ -68,6 +69,7 @@ class AnuncioController extends Controller
             'userLogin' => $userLogin,
             'flash' => session('flash'),
             'titulo' => 'Anuncios',
+            
         ]);
     }
 
@@ -142,10 +144,11 @@ class AnuncioController extends Controller
      */
     public function show($id)
 {
-    $anuncio = Anuncio::with('user','imagen')->findOrFail($id);
+    $anuncio = Anuncio::with('user','imagen','categoria')->findOrFail($id);
     $userLogin = Auth::user();
 
     $comentarios=Comentario::where('anuncio_id',$id)->with('user')->get();
+    $categorias = Categoria::all(['id', 'nombre']);
 
     // $imagen=Imagen::where('anuncio_id',$id)->get();
 
@@ -155,6 +158,7 @@ class AnuncioController extends Controller
         'comentarios' => $comentarios,
         // 'imagen' => $imagen,
         'flash' => session('flash'),
+        'categorias'=>$categorias,
     ]);
 }
 
@@ -180,18 +184,50 @@ class AnuncioController extends Controller
             'articulo'=>'required|string|max:255',
             'valor'=>'required|numeric',
             'descripcion'=>'required|string|max:1000',
-            // 'cambio'=>'required|string|max:255',
-            // 'lugar'=>'required|string|max:255',
+            'cambio'=>'required|string|max:255',
+            'lugar'=>'required|string|max:255',
+            'categoria_id' => 'required|exists:categorias,id',
+            'imagen' => 'nullable|array',
+            'imagen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            
         ]);
         
         $anuncio=Anuncio::findOrFail($id);
         
-         // AUTORIZACIÓN Solo el usuario que lo creo puede actualizarlo
+        // AUTORIZACIÓN Solo el usuario que lo creo puede actualizarlo
         //  $this->authorize('update', $anuncio);
-          
         
-        $anuncio->update($validated);
-
+        
+        // $anuncio->update($validated);
+          $anuncio->update([
+        'articulo' => $validated['articulo'],
+        'valor' => $validated['valor'],
+        'descripcion' => $validated['descripcion'],
+        'cambio' => $validated['cambio'],
+        'lugar' => $validated['lugar'],
+        'categoria_id' => $validated['categoria_id'],
+        
+    ]);
+        
+        // Si se suben nuevas imágenes, las guardamos y eliminamos las anteriores
+        
+        if ($request->hasFile('imagen')) {
+            // Elimina imágenes anteriores
+            foreach ($anuncio->imagen as $img) {
+                Storage::disk('public')->delete($img->ruta);
+                $img->delete();
+            }
+            // Guarda las nuevas imágenes
+            foreach ($request->file('imagen') as $img) {
+                $path = $img->store('imagenes', 'public');
+                Imagen::create([
+                    'anuncio_id' => $anuncio->id,
+                    'ruta' => $path,
+                ]);
+            }
+        }
+        
+        
         //OPCION v1 (desde la vista de editar con formulario)
         // return redirect()->route('anuncios.index')->with('actualizado','Anuncio editado con éxito');
 

@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { Heart, MessageCircleMore, Trash2,UserPen } from 'lucide-react';
+import { CalendarDays, Heart, MessageCircleMore, Trash2, UserPen,LayoutGrid } from 'lucide-react';
 
 import { Link } from '@inertiajs/react';
 
@@ -133,11 +133,13 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
             <FlashMsj />
 
             <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col gap-4 rounded-xl p-4">
-                <Head title="Index" />
+                <Head title="Anuncios"/>
 
                 {/* HEADER */}
                 <div className="m-4 flex flex-col items-center justify-end gap-2 md:flex-row">
-                    <div className="flex w-full items-center justify-center text-4xl font-bold md:justify-start">
+
+                    {/* TITULO pagina*/}
+                    <div className="flex w-full items-center justify-center text-4xl font-bold  md:justify-start">
                         <h1>{titulo ?? 'Boneke'}</h1>
                     </div>
 
@@ -152,22 +154,22 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                             key={anuncio.id}
                             // className="m-1.5 bg-neutral-800 px-1"
 
-                            className="m-2 h-[26rem] max-w-2xl cursor-pointer border border-transparent px-1 py-3 duration-500 hover:border-amber-600"
+                            className="m-2 h-[24.5rem] max-w-2xl cursor-pointer border border-transparent px-1 py-3 duration-500 hover:border-amber-600"
                             onClick={() => (window.location.href = route('anuncios.show', anuncio.id))}
                         >
                             <CardHeader>
-                                <CardTitle className="font-semibold hover:text-amber-600 transition duration-400">{limitarPalabras(anuncio.articulo, 3)}</CardTitle>
-                                {/* <CardDescription>Publicado por <span className='font-black text-amber-600'>{anuncio.user.name}</span></CardDescription> */}
-                                <CardDescription>
-                                    <p className="mb-3 text-right">
-                                        {' '}
-                                        Publicado por <span className="font-bold text-amber-600">{anuncio.user.name}</span> el{' '}
-                                        <span className="font-medium text-amber-600">{new Date(anuncio.created_at).toLocaleDateString()}</span>
-                                    </p>
+                                <CardTitle className="font-semibold transition duration-400 hover:text-amber-600 mt-1.5 ">
+                                    {limitarPalabras(anuncio.articulo, 3)}
+                                </CardTitle>
 
-                                    {/* categoria anuncio */}
+
+                                <CardDescription className="flex justify-between gap-5  mb-2">
+                                    
+                                        {/* categoria anuncio */}
+                                    <div className= "flex items-center gap-1" >
+                                        <LayoutGrid className="w-4" />
                                     <a
-                                        className="cursor-pointer text-amber-600 hover:text-neutral-100"
+                                        className="cursor-pointer text-amber-600 hover:text-neutral-100 font-semibold"
                                         onClick={(e) => {
                                             // evitar que el click afecte al card(que el link lleve al anuncio)
                                             e.stopPropagation();
@@ -177,17 +179,35 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                                         {/* {anuncio.categoria.nombre} */}
                                         {anuncio.categoria ? anuncio.categoria.nombre : 'Sin categoría'}
                                     </a>
+                                    </div>
+                                    <div className='flex items-center gap-3'>
+
+
+                                        {/* autor */}
+                                    <div className="flex items-center gap-1">
+                                        <UserPen className="w-4" />
+                                        <span className="font-semibold text-amber-600">{anuncio.user.name}</span>
+                                    </div>
+
+                                        {/* fecha */}
+                                    <div className="flex items-center gap-1">
+                                        <CalendarDays className="w-4" />
+                                        <span className="font-medium text-amber-600">{new Date(anuncio.created_at).toLocaleDateString()}</span>
+                                    </div>
+                                    </div>
+
+
                                 </CardDescription>
+
+                            
                             </CardHeader>
 
                             <CardContent>
                                 {/* descripcion */}
-                                <CardDescription
-                                className='h-[2rem]'
-                                >{limitarPalabras(anuncio.descripcion, limite)}</CardDescription>
+                                <CardDescription className="h-[2rem]">{limitarPalabras(anuncio.descripcion, limite)}</CardDescription>
 
                                 {/* imagen */}
-                                <div className="flex h-[8rem] w-[12rem] mx-auto my-5 items-center justify-center overflow-hidden rounded-md bg-neutral-600 md:h-[10rem]">
+                                <div className="mx-auto my-5 flex h-[8rem] w-[12rem] items-center justify-center overflow-hidden rounded-md bg-neutral-600 md:h-[10rem]">
                                     {anuncio.imagen.length > 0 && (
                                         <img
                                             src={`/storage/${anuncio.imagen[0]?.ruta}`}
@@ -199,7 +219,7 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                             </CardContent>
 
                             {/*CARD FOOTER */}
-                            <CardFooter className="flex items-center justify-between border-t px-4 py-4 my-4">
+                            <CardFooter className="my-4 flex items-center justify-between border-t px-4 py-4">
                                 <div className="flex items-center gap-4">
                                     <button
                                         onClick={(e) => {
@@ -224,20 +244,25 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                                         <span className="text-xs">{anuncio.comentario_count}</span>
                                     </div>
                                 </div>
-                                
+
+                                {/* BORRAR */}
                                 <div className="flex gap-2">
                                     {userLogin && userLogin.id === anuncio.user.id && (
                                         <form method="POST" action={route('anuncios.destroy', anuncio.id)}>
                                             <input type="hidden" name="_token" value={getToken()} />
                                             <input type="hidden" name="_method" value="DELETE" />
-                                            <Button type="submit" size="icon" variant="ghost">
+
+                                            <Button type="submit" size="icon" variant="ghost" className='rounded-2xl border border-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent hover:cursor-pointer'>
                                                 <Trash2 className="h-5 w-5" />
                                             </Button>
                                         </form>
                                     )}
-                                    <Button size="sm" variant="outline"
-                                    className='bg-amber-700 rounded-2xl border border-transparent hover:bg-transparent hover:border hover:border-amber-700 text-neutral-200 font-semibold transition duration-400'
-                                    onClick={(e) => e.stopPropagation()}>
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="rounded-2xl border border-transparent bg-amber-700 font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
                                         <Link href={route('anuncios.show', anuncio.id)}>Ver anuncio</Link>
                                     </Button>
                                 </div>

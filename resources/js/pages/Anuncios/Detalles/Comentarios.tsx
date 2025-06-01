@@ -24,7 +24,7 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
             {comentarios.map((comentario) => (
 
                 <div className="flex justify-center">
-                    <Card key={comentario.id} className="mx-4 my-2 w-full max-w-[970px] flex-col bg-neutral-800 px-1 py-4">
+                    <Card key={comentario.id} className="mx-4 my-2 w-full max-w-[50rem] flex-col bg-neutral-800 px-1 py-4">
                         <CardHeader>
                             {/* <CardTitle> {comentario.user.name}</CardTitle> */}
 
