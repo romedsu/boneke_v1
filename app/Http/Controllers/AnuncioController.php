@@ -151,7 +151,9 @@ class AnuncioController extends Controller
 
      $anuncio->liked_by_user = $anuncio->likes->contains('user_id', Auth::id());
      
-    $comentarios=Comentario::where('anuncio_id',$id)->with('user')->get();
+    $comentarios=Comentario::where('anuncio_id',$id)->with('user')
+     ->orderBy('created_at', 'desc')
+    ->get();
     $categorias = Categoria::all(['id', 'nombre']);
 
     // $imagen=Imagen::where('anuncio_id',$id)->get();
@@ -302,9 +304,15 @@ public function misAnuncios()
         ->withCount('comentario', 'likes')
         ->paginate(9);
 
+       $anuncios->getCollection()->transform(function ($anuncio) {
+        $anuncio->liked_by_user = $anuncio->likes->contains('user_id', Auth::id());
+        return $anuncio;
+    });
+
+
     return inertia('Anuncios/Index', [
         'anuncios' => $anuncios,
-        'userLogin' =>Auth::id(),
+        'userLogin' =>Auth::user(),
         'titulo' => 'Mis Anuncios',
     ]);
 }
@@ -320,7 +328,7 @@ public function misLikes()
         ->withCount('comentario', 'likes')
         ->paginate(9);
 
-    // Añade esta transformación:
+ 
     $anuncios->getCollection()->transform(function ($anuncio) {
         $anuncio->liked_by_user = true;
         return $anuncio;

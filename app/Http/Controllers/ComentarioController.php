@@ -16,7 +16,10 @@ class ComentarioController extends Controller
      */
     public function index()
     {
-        $comentarios=Comentario::with('user')->get();
+   
+        $comentarios = Comentario::with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
         //datos del usuario logueado
         $userLogin = Auth::user();
 

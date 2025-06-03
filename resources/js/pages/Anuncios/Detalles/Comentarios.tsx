@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 import NuevoComentario from './NuevoComentario';
 
-import { LucidePenBox, Trash2 } from 'lucide-react';
+import { LucidePenBox, MessagesSquare, Trash2 } from 'lucide-react';
 
 import React, { useState } from 'react';
 
@@ -19,20 +19,24 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
     const [editable, setEditable] = useState<number | null>(null);
 
     return (
-        <div>
-            <h1>COMENTARIOS</h1>
-            {comentarios.map((comentario) => (
+        <div className="flex flex-col justify-center">
+            <NuevoComentario anuncio_id={anuncio_id} />
 
-                <div className="flex justify-center">
-                    <Card key={comentario.id} className="mx-4 my-2 w-full max-w-[50rem] flex-col bg-neutral-800 px-1 py-4">
+            <div className="lg:mt-1 flex w-full items-center justify-end gap-2 pr-5 lg:justify-center">
+                <MessagesSquare />
+                <h1 className="font-medium text-amber-600 lg:text-xl ">COMENTARIOS</h1>
+            </div>
+            {comentarios.map((comentario) => (
+                <div key={comentario.id} className="flex justify-center">
+                    <Card key={comentario.id} className="mx-4 my-2 w-full max-w-[48rem] flex-col px-1 py-3">
                         <CardHeader>
                             {/* <CardTitle> {comentario.user.name}</CardTitle> */}
 
-                           <CardTitle className="text-sm font-light  mb-3 text-right">
-                                        {' '}
-                                        Publicado por <span className="font-bold text-amber-600">{comentario.user.name}</span> el{' '}
-                                        <span className="font-medium text-amber-600">{new Date(comentario.created_at).toLocaleDateString()}</span>
-                                    </CardTitle>
+                            <CardTitle className="mb-1 text-right text-sm font-light">
+                                {' '}
+                                Publicado por <span className="font-bold text-amber-600">{comentario.user.name}</span> el{' '}
+                                <span className="font-medium text-amber-600">{new Date(comentario.created_at).toLocaleDateString()}</span>
+                            </CardTitle>
                         </CardHeader>
 
                         <CardContent>
@@ -61,8 +65,11 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
                         </CardContent>
 
                         {userLogin.id === comentario.user_id && editable !== comentario.id && (
-                            <CardFooter className="flex justify-end gap-4">
-                                <Button onClick={() => setEditable(comentario.id)} className="p-3">
+                            <CardFooter className="flex justify-end gap-4 mt-3">
+                                <Button
+                                    onClick={() => setEditable(comentario.id)}
+                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-transparent bg-amber-700 font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent"
+                                >
                                     <LucidePenBox />
                                 </Button>
 
@@ -71,7 +78,10 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
                                     <input type="hidden" name="_anuncio_id" value={anuncio_id} />
 
                                     <input type="hidden" name="_method" value="DELETE" />
-                                    <Button type="submit" className="p-3">
+                                    <Button
+                                        type="submit"
+                                        className="flex h-8 w-8 items-center justify-center rounded-full border border-amber-700 bg-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-red-800 hover:bg-red-800"
+                                    >
                                         <Trash2 />
                                     </Button>
                                 </form>
@@ -80,8 +90,6 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
                     </Card>
                 </div>
             ))}
-
-            <NuevoComentario anuncio_id={anuncio_id} />
         </div>
     );
 };

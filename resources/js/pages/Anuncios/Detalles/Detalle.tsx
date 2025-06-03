@@ -59,11 +59,11 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <FlashMsj />
-            <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col gap-4 rounded-xl p-4">
+            <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col rounded-xl px-4">
                 <Head title={anuncio.articulo}></Head>
 
                 {/* HEADER */}
-                <div className="m-4 flex flex-col items-center justify-end gap-2 md:flex-row">
+                <div className="m-2 flex flex-col items-center justify-end gap-2 md:flex-row">
                     {/* TITULO pagina*/}
                     <div className="flex w-full items-center justify-center text-4xl font-bold md:justify-start">
                         <h1>{anuncio.articulo ?? 'Boneke'}</h1>
@@ -73,8 +73,8 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                 <div className="flex justify-center">
                     <Card
                         key={anuncio.id}
-                        className={`mx-auto w-full max-w-3xl bg-neutral-800 px-5 py-4 ${
-                            editable === anuncio.id ? 'border border-amber-600' : 'border border-transparent'
+                        className={`mx-auto my-2 w-full max-w-3xl bg-neutral-800 px-0 py-4  ${
+                            editable === anuncio.id ? 'border border-amber-600' : 'border  border-amber-600'
                         }`}
                     >
                         <CardHeader>
@@ -251,9 +251,10 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                     <img key={index} src={`/storage/${img.ruta}`} alt={`Imagen ${index + 1}`} className="h-auto w-1/2" />
                                     ))} */}
 
-                                    {/* CARRUSEL IMAGENES */}
                                     {anuncio.imagen && anuncio.imagen.length > 0 && (
-                                        <div className="grid grid-cols-1 md:grid-cols-3">
+                                        <div className="grid grid-cols-1 lg:grid-cols-3 md:gap-2">
+
+                                            {/* CARRUSEL IMAGENES */}
                                             <Carousel className="col-span-2 mx-auto w-full max-w-sm">
                                                 <CarouselContent>
                                                     {anuncio.imagen.map((img: any, index: number) => (
@@ -265,7 +266,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                                                         <img
                                                                             src={`/storage/${img.ruta}`}
                                                                             alt={`Imagen ${index + 1}`}
-                                                                            className="h-auto w-full rounded-lg"
+                                                                            className="mx-auto max-h-60 w-auto max-w-full rounded-lg object-contain md:max-h-96 md:max-w-full md:rounded-xl"
                                                                         />
                                                                     </CardContent>
 
@@ -283,42 +284,33 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                                 )}
                                             </Carousel>
 
-                                            <CardDescription className="flex flex-col items-center justify-center gap-1 md:gap-5">
-                                                <div className="flex w-full items-center justify-between  md:flex-col md:items-end">
+                                            <CardDescription className="flex flex-col items-center justify-center gap-1 lg:items-start md:gap-5">
+                                                <div className="flex w-full items-center justify-between md:flex-col lg:items-start md:justify-start md:gap-1">
                                                     {/* LUGAR */}
+
                                                     <div className="flex items-center gap-2">
-                                                        <div className="flex items-center gap-1">
-                                                            <MapPin className="h-5 w-5 md:h-6 md:w-6" />
-                                                            <span className="text-lg font-semibold text-neutral-200 md:text-xl">
-                                                                {' '}
-                                                                {anuncio.lugar}
-                                                            </span>
-                                                        </div>
+                                                        <MapPin className="h-5 w-5 md:h-6 md:w-6" />
+                                                        <span className="text-lg font-semibold text-neutral-200 md:text-xl"> {anuncio.lugar}</span>
                                                     </div>
+
                                                     {/* VALOR */}
-                                                    <div className="flex items-center gap-1">
-                                                        <div className="flex items-center gap-2">
-                                                            <PiggyBank className="h-7 w-7 md:h-10 md:w-10" />
-                                                            <span className="text-2xl font-semibold text-amber-600 md:text-4xl">
-                                                                {' '}
-                                                                {anuncio.valor} €
-                                                            </span>
-                                                        </div>
+
+                                                    <div className="flex items-center gap-2">
+                                                        <PiggyBank className="h-7 w-7 md:h-10 md:w-10" />
+                                                        <span className="text-2xl font-semibold text-amber-600 md:text-4xl"> {anuncio.valor} €</span>
                                                     </div>
                                                 </div>
-
                                                 {/* CAMBIO */}
-                                                <div className="flex items-center gap-2">
-                                                    <div className="flex items-center gap-1">
-                                                        <ArrowRightLeft className="h-5 w-5 md:h-6 md:w-6" />
-                                                        <span className="text-lg font-semibold text-amber-600 md:text-xl"> {anuncio.cambio}</span>
-                                                    </div>
+
+                                                <div className="flex items-center justify-center gap-1">
+                                                    <ArrowRightLeft className="h-5 w-5 md:h-6 md:w-6" />
+                                                    <span className="text-lg font-semibold text-amber-600 md:text-xl"> {anuncio.cambio}</span>
                                                 </div>
 
                                                 {/* EDITAR Y BORRAR */}
                                                 {/* solo si el usuario logueado es el autor del anuncio o admin */}
-                                                <CardFooter className="my-1 w-full  flex gap-10 items-center justify-between border-t px-4 py-1 md:flex-col">
-                                                    <div className="flex  items-center  gap-4">
+                                                <CardFooter className="my-1 flex w-full items-center justify-between gap-10 border-t px-4 py-1 lg:flex-col md:items-center md:gap-4">
+                                                    <div className="flex items-center gap-4">
                                                         <button
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
@@ -327,7 +319,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                                             className="flex cursor-pointer items-center gap-1 border-none bg-transparent p-0"
                                                         >
                                                             <Heart
-                                                                className={`h-5.5 w-5.5 transition-transform duration-200 ${
+                                                                className={`h-6.5 w-6.5 transition-transform duration-200 ${
                                                                     anuncio.liked_by_user
                                                                         ? 'fill-red-400 text-red-400 hover:scale-105'
                                                                         : 'text-gray-400 hover:scale-105 hover:text-red-400'
@@ -338,18 +330,18 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
 
                                                         {/* contador comentarios */}
                                                         <div className="flex items-center gap-1 text-neutral-400">
-                                                            <MessageCircleMore className="h-5 w-5 text-gray-400" />
+                                                            <MessageCircleMore className="h-6 w-6 text-gray-400" />
                                                             <span className="text-md text-neutral-200">{anuncio.comentario_count}</span>
                                                         </div>
                                                     </div>
-                                                    <div className="flex gap-4 ju">
+                                                    <div className="ju flex gap-4">
                                                         {/* equivale a IF */}
                                                         {(userLogin?.id === anuncio.user.id || userLogin.is_admin == true) &&
                                                             editable !== anuncio.id && (
                                                                 <>
                                                                     <Button
                                                                         onClick={() => setEditable(anuncio.id)}
-                                                                        className="flex h-10 w-10 items-center justify-center rounded-full border border-transparent bg-amber-700 font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent"
+                                                                        className="flex h-12 w-12 items-center justify-center rounded-full border border-transparent bg-amber-700 font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent"
                                                                     >
                                                                         <LucidePenBox />
                                                                     </Button>
@@ -360,7 +352,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                                                         <input type="hidden" name="_method" value="DELETE" />
                                                                         <Button
                                                                             type="submit"
-                                                                            className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-700 bg-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-red-800 hover:bg-red-800"
+                                                                            className="flex h-12 w-12 items-center justify-center rounded-full border border-amber-700 bg-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-red-800 hover:bg-red-800"
                                                                         >
                                                                             <Trash2 />
                                                                         </Button>
@@ -375,10 +367,6 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                 </div>
                             )}
                         </CardHeader>
-
-                        {/* <CardContent>
-                        <CardDescription>Descripcion: {anuncio.descripcion}</CardDescription>
-                    </CardContent> */}
                     </Card>
                 </div>
             </div>
