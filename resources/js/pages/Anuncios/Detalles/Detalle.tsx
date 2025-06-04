@@ -73,8 +73,8 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                 <div className="flex justify-center">
                     <Card
                         key={anuncio.id}
-                        className={`mx-auto my-2 w-full max-w-3xl bg-neutral-800 px-0 py-4  ${
-                            editable === anuncio.id ? 'border border-amber-600' : 'border  border-amber-600'
+                        className={`mx-auto my-2 w-full max-w-3xl bg-neutral-800 px-0 py-4 ${
+                            editable === anuncio.id ? 'border border-amber-600' : 'border border-amber-600'
                         }`}
                     >
                         <CardHeader>
@@ -189,6 +189,19 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                             </label>
                                             <span className="text-xs font-medium text-neutral-400">Puedes seleccionar varias imágenes</span>
                                         </CardTitle>
+                                        {/* mostrar imagnes actuales */}
+                                        {anuncio.imagen && anuncio.imagen.length > 0 && (
+                                            <div className="my-2 flex flex-wrap gap-2">
+                                                {anuncio.imagen.map((img: any, idx: number) => (
+                                                    <img
+                                                        key={idx}
+                                                        src={`/storage/${img.ruta}`}
+                                                        alt={`Imagen ${idx + 1}`}
+                                                        className="h-24 w-24 rounded border border-neutral-700 object-cover"
+                                                    />
+                                                ))}
+                                            </div>
+                                        )}
                                     </CardContent>
 
                                     <div className="mt-2 flex justify-end gap-2">
@@ -252,8 +265,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                     ))} */}
 
                                     {anuncio.imagen && anuncio.imagen.length > 0 && (
-                                        <div className="grid grid-cols-1 lg:grid-cols-3 md:gap-2">
-
+                                        <div className="grid grid-cols-1 md:gap-2 lg:grid-cols-3">
                                             {/* CARRUSEL IMAGENES */}
                                             <Carousel className="col-span-2 mx-auto w-full max-w-sm">
                                                 <CarouselContent>
@@ -284,8 +296,8 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                                 )}
                                             </Carousel>
 
-                                            <CardDescription className="flex flex-col items-center justify-center gap-1 lg:items-start md:gap-5">
-                                                <div className="flex w-full items-center justify-between md:flex-col lg:items-start md:justify-start md:gap-1">
+                                            <CardDescription className="flex flex-col items-center justify-center gap-1 md:gap-5 lg:items-start">
+                                                <div className="flex w-full items-center justify-between md:flex-col md:justify-start md:gap-1 lg:items-start">
                                                     {/* LUGAR */}
 
                                                     <div className="flex items-center gap-2">
@@ -309,7 +321,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
 
                                                 {/* EDITAR Y BORRAR */}
                                                 {/* solo si el usuario logueado es el autor del anuncio o admin */}
-                                                <CardFooter className="my-1 flex w-full items-center justify-between gap-10 border-t px-4 py-1 lg:flex-col md:items-center md:gap-4">
+                                                <CardFooter className="my-1 flex w-full items-center justify-between gap-10 border-t px-4 py-1 md:items-center md:gap-4 lg:flex-col">
                                                     <div className="flex items-center gap-4">
                                                         <button
                                                             onClick={(e) => {

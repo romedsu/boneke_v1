@@ -19,13 +19,15 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
     const [editable, setEditable] = useState<number | null>(null);
 
     return (
-        <div className="flex flex-col justify-center">
+        <div className="mb-10 flex flex-col justify-center">
             <NuevoComentario anuncio_id={anuncio_id} />
 
-            <div className="lg:mt-1 flex w-full items-center justify-end gap-2 pr-5 lg:justify-center">
-                <MessagesSquare />
-                <h1 className="font-medium text-amber-600 lg:text-xl ">COMENTARIOS</h1>
-            </div>
+            {comentarios.length != 0 && (
+                <div className="flex w-full items-center justify-end gap-2 pr-5 lg:mt-1 lg:justify-center">
+                    <MessagesSquare />
+                    <h1 className="font-medium text-amber-600 lg:text-xl">COMENTARIOS</h1>
+                </div>
+            )}
             {comentarios.map((comentario) => (
                 <div key={comentario.id} className="flex justify-center">
                     <Card key={comentario.id} className="mx-4 my-2 w-full max-w-[48rem] flex-col px-1 py-3">
@@ -65,7 +67,7 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
                         </CardContent>
 
                         {userLogin.id === comentario.user_id && editable !== comentario.id && (
-                            <CardFooter className="flex justify-end gap-4 mt-3">
+                            <CardFooter className="mt-3 flex justify-end gap-4">
                                 <Button
                                     onClick={() => setEditable(comentario.id)}
                                     className="flex h-8 w-8 items-center justify-center rounded-full border border-transparent bg-amber-700 font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent"

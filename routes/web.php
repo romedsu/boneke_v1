@@ -78,7 +78,9 @@ Route::put('/likes/{anuncio}', [LikeController::class, 'update'])->middleware('a
 Route::resource('categorias', CategoriaController::class)
         ->only(['index','show','store','destroy'])
         ->middleware(['auth']);
-   
+
+//BUSCADOR (anuncio controller)
+Route::get('/buscar', [AnuncioController::class, 'buscar']);  
 
 
 

@@ -118,7 +118,7 @@ class AnuncioController extends Controller
        //opción varias imágenes
        if ($request->hasFile('imagen')) {
         foreach ($request->file('imagen') as $img) {
-            $path = $img->store('imagenes', 'public'); 
+            $path = $img->store('nuevas', 'public'); 
 
             Imagen::create([
                 'anuncio_id' => $anuncio->id, 
@@ -225,7 +225,7 @@ class AnuncioController extends Controller
             }
             // Guarda las nuevas imágenes
             foreach ($request->file('imagen') as $img) {
-                $path = $img->store('imagenes', 'public');
+                $path = $img->store('nuevas', 'public');
                 Imagen::create([
                     'anuncio_id' => $anuncio->id,
                     'ruta' => $path,
@@ -360,6 +360,21 @@ public function updateLike(Anuncio $anuncio)
         'anuncio' => $anuncio,
         'liked' => !$liked,
     ]);
+}
+
+
+//BUSCADOR
+public function buscar(Request $request)
+{
+    $query = $request->input('query');
+
+    $anuncios = Anuncio::with(['categoria', 'user','imagen'])
+        ->where('articulo', 'like', "%{$query}%")
+        ->orWhere('descripcion', 'like', "%{$query}%")
+        ->orWhere('lugar', 'like', "%{$query}%")
+        ->get();
+
+    return response()->json($anuncios);
 }
     
 }

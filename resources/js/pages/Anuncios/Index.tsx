@@ -10,6 +10,8 @@ import { CalendarDays, Heart, LayoutGrid, MessageCircleMore, Trash2, UserPen } f
 
 import { Link } from '@inertiajs/react';
 
+import { useEffect } from 'react';
+
 // import { Toaster, toast } from 'sonner';
 
 // import 'react-toastify/dist/ReactToastify.css';
@@ -97,39 +99,46 @@ const updateLike = async (anuncioId: number) => {
 
 const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ anuncios: initialAnuncios, userLogin, titulo }) => {
     // const [anuncios, setAnuncios] = useState(initialAnuncios);
-    const [anuncios, setAnuncios] = useState(initialAnuncios.data);
+    const [anuncios] = useState(initialAnuncios.data);
 
     const [busqueda, setBusqueda] = useState('');
 
-    // //FEEDBACK FLASH - react-toastify
-    //   const { flash } = usePage().props as { flash?: string };
-    // //   console.log('Mensaje flash recibido:', flash);
-
-    // useEffect(() => {
-    //     if (flash) {
-    //         toast.success(flash);
-    //     }
-    // }, [flash]);
+    const [resultados, setResultados] = useState([]);
 
     //  filtrar anuncios para buscador
-    const anunciosFiltrados = anuncios.filter(
-        (anuncio: any) =>
-            anuncio.articulo.toLowerCase().includes(busqueda.toLowerCase()) ||
-            anuncio.descripcion.toLowerCase().includes(busqueda.toLowerCase()) ||
-            anuncio.lugar.toLowerCase().includes(busqueda.toLowerCase()),
-    );
+    // const anunciosFiltrados = anuncios.filter(
+    //     (anuncio: any) =>
+    //         anuncio.articulo.toLowerCase().includes(busqueda.toLowerCase()) ||
+    //         anuncio.descripcion.toLowerCase().includes(busqueda.toLowerCase()) ||
+    //         anuncio.lugar.toLowerCase().includes(busqueda.toLowerCase()),
+    // );
+
+    //Buscar anuncios al escribir en el buscador
+    useEffect(() => {
+        if (busqueda.trim() === '') {
+            setResultados([]);
+            return;
+        }
+
+        const fetchResultados = async () => {
+            const response = await fetch(`/buscar?query=${encodeURIComponent(busqueda)}`);
+            if (response.ok) {
+                const data = await response.json();
+                setResultados(data);
+            } else {
+                setResultados([]);
+            }
+        };
+
+        fetchResultados();
+    }, [busqueda]);
+
+
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            {/* //FEEDBACK FLASH */}
-            {/* {flash && (
-                <div className="mb-4 rounded bg-green-100 p-3 text-green-800 shadow text-center font-semibold">
-                    {flash}
-                </div>
-            )} */}
-
-            {/* <ToastContainer position="top-right" autoClose={2000} transition={Slide} theme="colored"/> */}
-
+       
+            {/* MENSAJES FEEDBACK */}
             <FlashMsj />
 
             <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col gap-4 rounded-xl p-4">
@@ -148,7 +157,8 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
 
                 {/* ANUNCIOS */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-                    {anunciosFiltrados.map((anuncio: any) => (
+                    {/* {anunciosFiltrados.map((anuncio: any) => ( */}
+                    {(busqueda.trim() ? resultados : anuncios).map((anuncio: any) => (
                         <Card
                             key={anuncio.id}
                             // className="m-1.5 bg-neutral-800 px-1"
@@ -199,7 +209,7 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
 
                                 {/* imagen */}
                                 <div className="mx-auto my-5 flex h-[8rem] w-[12rem] items-center justify-center overflow-hidden rounded-md bg-neutral-600 md:h-[10rem]">
-                                    {anuncio.imagen.length > 0 && (
+                                    {Array.isArray(anuncio.imagen) && anuncio.imagen.length > 0 && (
                                         <img
                                             src={`/storage/${anuncio.imagen[0]?.ruta}`}
                                             alt={`Imagen`}
@@ -231,7 +241,7 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
 
                                     {/* contador comentarios */}
                                     <div className="flex items-center gap-1 text-neutral-400">
-                                        <MessageCircleMore className="h-5 w-5 text-gray-400 " />
+                                        <MessageCircleMore className="h-5 w-5 text-gray-400" />
                                         <span className="text-md text-neutral-200">{anuncio.comentario_count}</span>
                                     </div>
                                 </div>
@@ -240,7 +250,7 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                                 {/* solo usuario que lo ah creado y admin */}
                                 <div className="flex gap-4">
                                     {/* equivale a IF */}
-                                    {userLogin && (userLogin.id === anuncio.user.id || userLogin.is_admin==true) && (
+                                    {userLogin && (userLogin.id === anuncio.user.id || userLogin.is_admin == true) && (
                                         <form method="POST" action={route('anuncios.destroy', anuncio.id)}>
                                             <input type="hidden" name="_token" value={getToken()} />
                                             <input type="hidden" name="_method" value="DELETE" />
@@ -271,21 +281,24 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                 </div>
             </div>
             {/* PAGINACIÓN */}
-            <div className="mt-2 mb-7 flex justify-center gap-2">
-                {initialAnuncios.links.map((link: any, idx: number) => (
-                    <button
-                        key={idx}
-                        disabled={!link.url}
-                        onClick={() => link.url && window.location.assign(link.url)}
-                        className={`rounded-2xl px-3 py-1 ${
-                            link.active
-                                ? 'bg-amber-700 font-bold text-white'
-                                : 'border border-amber-700 text-neutral-400 hover:cursor-pointer hover:text-neutral-100'
-                        }`}
-                        dangerouslySetInnerHTML={{ __html: link.label }}
-                    />
-                ))}
-            </div>
+             {/* eliminaa paginacion al hacer búsqueda        */}
+            {!busqueda.trim() && (
+                <div className="mt-2 mb-7 flex justify-center gap-2">
+                    {initialAnuncios.links.map((link: any, idx: number) => (
+                        <button
+                            key={idx}
+                            disabled={!link.url}
+                            onClick={() => link.url && window.location.assign(link.url)}
+                            className={`rounded-2xl px-3 py-1 ${
+                                link.active
+                                    ? 'bg-amber-700 font-bold text-white'
+                                    : 'border border-amber-700 text-neutral-400 hover:cursor-pointer hover:text-neutral-100'
+                            }`}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                        />
+                    ))}
+                </div>
+            )}
         </AppLayout>
     );
 };
