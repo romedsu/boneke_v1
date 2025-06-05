@@ -66,9 +66,11 @@ export function AppSidebar() {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton className="bg-amber-700" size="lg" asChild>
-                            <Link href="/" prefetch>
+                        <SidebarMenuButton className="bg-amber-700 gap-0 hover:bg-neutral-800" size="lg" asChild>
+                            <Link href="/" prefetch
+                                className="flex   text-neutral-200 hover:text-neutral-100">
                                 <AppLogo />
+                            <img className="w-37 mx-auto " src="/storage/boneke_04.png" alt="logo boneke" />
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>

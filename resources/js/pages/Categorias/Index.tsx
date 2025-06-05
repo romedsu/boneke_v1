@@ -9,6 +9,11 @@ import FlashMsj from '@/components/FlashMsj';
 import { Button } from '@/components/ui/button';
 import { Inertia } from '@inertiajs/inertia';
 import { Trash2 } from 'lucide-react';
+// import{Laptop, Car, Shirt, Volleyball, Home, Leaf, PawPrint, Puzzle, Book, Music, Briefcase, UserCheck, HeartPulse, Scissors, Palette, Star, Utensils, Sofa, Camera, Baby, Bus, Dice5, Gamepad2, Refrigerator, Globe, Lightbulb, Lock, Paintbrush, PhoneCall, Plane, Rocket, ShoppingCart, Hammer , Trophy} from 'lucide-react';
+
+import * as Icons from 'lucide-react';
+
+import { Icon } from '@/components/ui/iconCat';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,14 +27,15 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
     const [busqueda, setBusqueda] = useState('');
     const categoriasFiltrados = categorias.filter((categoria: any) => categoria.nombre.toLowerCase().includes(busqueda.toLowerCase()));
 
-    const { data, setData, post, processing, reset, errors } = useForm({ nombre: '' });
+    const { data, setData, post, processing, reset, errors } = useForm({ nombre: '', icon: '' });
+
+    type IconName = keyof typeof Icons;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <FlashMsj />
 
             {/* CONTENIDO */}
-            <div className="mx-4 flex h-full max-w-7xl flex-1 flex-col gap-4 rounded-xl p-4">
-                <Head title="Categorías" />
+<div className="mx-auto flex h-full w-full flex-1 flex-col gap-4 rounded-xl p-5 sm:p-4 lg:max-w-7xl">                <Head title="Categorías" />
 
                 {/* HEADER */}
                 <div className="m-4 flex flex-col items-center justify-end gap-2 md:flex-row">
@@ -42,12 +48,11 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                 </div>
 
                 {/* NUEVA CATEGORIA (solo admin)  */}
-                {userLogin && userLogin.is_admin==true && (
+                {userLogin && userLogin.is_admin == true && (
                     // <div className="fixed right-4 bottom-4">
-                    <div className="m-auto mb-4 flex w-[40rem] flex-col items-center justify-center gap-4 rounded-xl bg-neutral-900 p-5 shadow-md">
-                        <h3 className="text-2xl">Nueva categoria</h3>
-
-                        <div className="flex w-[30rem] items-end">
+                    <div className="mx-auto mb-4 flex w-full max-w-full flex-col items-center justify-center gap-4 rounded-xl bg-neutral-900 p-4 shadow-md sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl xl:p-6">
+                        <h3 className="text-2xl">Nueva categoría</h3>
+                        <div className="flex w-full items-end">
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -55,7 +60,7 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                                         onSuccess: () => reset(),
                                     });
                                 }}
-                                className="flex w-full gap-6"
+                                className="flex w-full flex-col gap-5"
                             >
                                 <input
                                     type="text"
@@ -63,6 +68,13 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                                     value={data.nombre}
                                     onChange={(e) => setData('nombre', e.target.value)}
                                     placeholder="Nombre de la categoría"
+                                />
+                                <input
+                                    type="text"
+                                    className="mb-0 flex-1 rounded border bg-neutral-800 px-2 py-1 focus:border-amber-600 focus:outline-none"
+                                    value={data.icon}
+                                    onChange={(e) => setData('icon', e.target.value)}
+                                    placeholder="Icono (Lucide) de la categoría"
                                 />
                                 <button
                                     type="submit"
@@ -77,18 +89,20 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                 )}
 
                 {/* TABLA */}
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                    {categoriasFiltrados.map((categoria: any) => (
+                <div className="xs:grid-cols-2 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {categoriasFiltrados.map((categoria: { id: number; icon: IconName; nombre: string }) => (
                         <div
                             key={categoria.id}
-                            className="flex cursor-pointer items-center gap-4 rounded-lg border bg-neutral-900 p-4 shadow transition hover:bg-amber-700"
+                            className="group flex cursor-pointer items-center gap-4 rounded-lg border bg-neutral-900 p-4 shadow transition hover:bg-amber-700"
                             onClick={() => (window.location.href = route('anuncios.porCategoria', categoria.id))}
                         >
-                            <span className="w-16 font-bold">ID: {categoria.id}</span>
-                            <span className="font-medium">{categoria.nombre}</span>
+                            {/* <span className="w-16 font-bold">ID: {categoria.id}</span> */}
+                            {/* <span className="w-16 font-bold">{categoria.icono}</span> */}
 
+                            <Icon name={categoria.icon} className="h-5 w-5 text-amber-700 group-hover:text-neutral-300 sm:h-6 sm:w-6 md:h-6 md:w-6" />
+                            <span className="text-lg font-medium sm:text-base md:text-md">{categoria.nombre}</span>
                             {/* BORRAR CATEGORIA (solo admin) */}
-                           {userLogin && userLogin.is_admin==true && (
+                            {userLogin && userLogin.is_admin == true && (
                                 // OPCION A
                                 // <form method="POST" action={route('categorias.destroy', categoria.id)}>
                                 //     <input type="hidden" name="_token" value={getToken()} />

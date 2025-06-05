@@ -59,7 +59,8 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <FlashMsj />
-            <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col rounded-xl px-4">
+          
+            <div className="mx-auto flex h-full w-full max-w-full flex-1 flex-col rounded-xl p-2 px-4 sm:max-w-xl sm:px-4 md:max-w-2xl md:px-8 lg:max-w-4xl lg:px-12 xl:max-w-7xl xl:p-4 xl:px-0">
                 <Head title={anuncio.articulo}></Head>
 
                 {/* HEADER */}
@@ -70,10 +71,11 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                     </div>
                 </div>
 
-                <div className="flex justify-center">
+                <div className="flex flex-col items-center w-full">
+    <div className="w-full sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-3xl">
                     <Card
                         key={anuncio.id}
-                        className={`mx-auto my-2 w-full max-w-3xl bg-neutral-800 px-0 py-4 ${
+                        className={`mx-auto w-full max-w-full border border-amber-600 bg-neutral-900 px-2 py-4 sm:max-w-xl sm:px-6 md:max-w-2xl md:px-2 lg:max-w-3xl xl:max-w-3xl ${
                             editable === anuncio.id ? 'border border-amber-600' : 'border border-amber-600'
                         }`}
                     >
@@ -101,7 +103,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                         {/* CATEGORIA EDICIÓN */}
                                         <CardTitle className="flex items-center gap-5">
                                             <span className="text-lg font-semibold text-amber-600">Categoría:</span>
-                                            <div className="mb-5 w-[180px]">
+                                            <div className="mb-5 w-[180px] font-semibold">
                                                 <Select value={categoriaId} onValueChange={setCategoriaId}>
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Elige una" />
@@ -205,12 +207,15 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                     </CardContent>
 
                                     <div className="mt-2 flex justify-end gap-2">
-                                        <Button type="submit" className="text-md mx-0 mt-5 rounded-3xl bg-amber-700 font-bold text-white">
+                                        <Button
+                                            type="submit"
+                                            className="text-md mx-0 mt-5 rounded-3xl bg-amber-700 font-semibold text-white hover:border hover:border-amber-700 hover:bg-transparent"
+                                        >
                                             Actualizar
                                         </Button>
                                         <Button
                                             type="reset"
-                                            className="text-md text-neutral-200-700 mx-0 mt-5 rounded-3xl border border-amber-700 bg-transparent font-bold transition hover:border-red-700 hover:bg-red-700 hover:text-white"
+                                            className="text-md text-neutral-200-700 mx-0 mt-5 rounded-3xl border border-amber-700 bg-transparent font-semibold transition hover:border-red-700 hover:bg-red-700 hover:text-white"
                                             onClick={() => setEditable(null)}
                                         >
                                             Cancelar
@@ -221,7 +226,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                 //  -----------------<FIN EDITAR>-----------------
                                 <div>
                                     {/* TITULO */}
-                                    <CardTitle className="m-1 mb-3 text-center text-3xl font-semibold transition duration-400 hover:text-amber-600">
+                                    <CardTitle className="m-1 mb-3 lg:mt-3 text-center text-3xl font-semibold transition duration-400 hover:text-amber-600">
                                         {anuncio.articulo}
                                     </CardTitle>
                                     <CardDescription className="mb-2 flex justify-between gap-5">
@@ -273,7 +278,7 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                                         <CarouselItem className="" key={index}>
                                                             <div>
                                                                 {/* aqui color */}
-                                                                <Card className="mx-auto justify-center p-3">
+                                                                <Card className="mx-auto justify-center bg-neutral-800 p-3">
                                                                     <CardContent className="flex aspect-square items-center justify-center p-0 md:p-2">
                                                                         <img
                                                                             src={`/storage/${img.ruta}`}
@@ -296,32 +301,32 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                                 )}
                                             </Carousel>
 
-                                            <CardDescription className="flex flex-col items-center justify-center gap-1 md:gap-5 lg:items-start">
-                                                <div className="flex w-full items-center justify-between md:flex-col md:justify-start md:gap-1 lg:items-start">
+                                            <CardDescription className="flex flex-col items-center justify-center gap-1 md:gap-4 lg:items-start">
+                                                <div className="flex w-full items-center justify-between lg:flex-col lg:items-start lg:justify-start lg:gap-1">
                                                     {/* LUGAR */}
 
                                                     <div className="flex items-center gap-2">
-                                                        <MapPin className="h-5 w-5 md:h-6 md:w-6" />
-                                                        <span className="text-lg font-semibold text-neutral-200 md:text-xl"> {anuncio.lugar}</span>
+                                                        <MapPin className="h-4 w-4 md:h-6 md:w-6" />
+                                                        <span className="text-[1rem] font-semibold text-neutral-200 md:text-xl"> {anuncio.lugar}</span>
                                                     </div>
 
                                                     {/* VALOR */}
 
                                                     <div className="flex items-center gap-2">
-                                                        <PiggyBank className="h-7 w-7 md:h-10 md:w-10" />
-                                                        <span className="text-2xl font-semibold text-amber-600 md:text-4xl"> {anuncio.valor} €</span>
+                                                        <PiggyBank className="h-6 w-6 md:h-8 md:w-8" />
+                                                        <span className="text-[1.4rem] font-semibold text-amber-600 md:text-3xl lg:text-4xl"> {anuncio.valor} €</span>
                                                     </div>
                                                 </div>
                                                 {/* CAMBIO */}
 
                                                 <div className="flex items-center justify-center gap-1">
                                                     <ArrowRightLeft className="h-5 w-5 md:h-6 md:w-6" />
-                                                    <span className="text-lg font-semibold text-amber-600 md:text-xl"> {anuncio.cambio}</span>
+                                                    <span className="text-[1rem] font-semibold text-amber-600 md:text-xl"> {anuncio.cambio}</span>
                                                 </div>
 
                                                 {/* EDITAR Y BORRAR */}
                                                 {/* solo si el usuario logueado es el autor del anuncio o admin */}
-                                                <CardFooter className="my-1 flex w-full items-center justify-between gap-10 border-t px-4 py-1 md:items-center md:gap-4 lg:flex-col">
+                                                <CardFooter className="my-2 flex w-full items-center justify-between gap-10 border-t px-4 py-1 pt-6 md:items-center md:gap-4 lg:flex-col">
                                                     <div className="flex items-center gap-4">
                                                         <button
                                                             onClick={(e) => {
@@ -346,27 +351,25 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                                                             <span className="text-md text-neutral-200">{anuncio.comentario_count}</span>
                                                         </div>
                                                     </div>
-                                                    <div className="ju flex gap-4">
-                                                        {/* equivale a IF */}
+                                                    <div className="flex gap-2 sm:gap-4">
                                                         {(userLogin?.id === anuncio.user.id || userLogin.is_admin == true) &&
                                                             editable !== anuncio.id && (
                                                                 <>
                                                                     <Button
                                                                         onClick={() => setEditable(anuncio.id)}
-                                                                        className="flex h-12 w-12 items-center justify-center rounded-full border border-transparent bg-amber-700 font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent"
+                                                                        className="flex h-8 w-8 items-center justify-center rounded-full border border-transparent bg-amber-700 font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent sm:h-10 sm:w-10"
                                                                     >
-                                                                        <LucidePenBox />
+                                                                        <LucidePenBox className="h-4 w-4 sm:h-5 sm:w-5" />
                                                                     </Button>
 
                                                                     <form method="POST" action={route('anuncios.destroy', anuncio.id)}>
                                                                         <input type="hidden" name="_token" value={token} />
-
                                                                         <input type="hidden" name="_method" value="DELETE" />
                                                                         <Button
                                                                             type="submit"
-                                                                            className="flex h-12 w-12 items-center justify-center rounded-full border border-amber-700 bg-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-red-800 hover:bg-red-800"
+                                                                            className="flex h-8 w-8 items-center justify-center rounded-full border border-amber-700 bg-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-red-800 hover:bg-red-800 sm:h-10 sm:w-10"
                                                                         >
-                                                                            <Trash2 />
+                                                                            <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
                                                                         </Button>
                                                                     </form>
                                                                 </>
@@ -380,11 +383,13 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                             )}
                         </CardHeader>
                     </Card>
-                </div>
-            </div>
-
             {/* Al componente Comentarios se le pasan 3 parametros */}
             <Comentarios comentarios={comentarios} anuncio_id={anuncio.id} userLogin={userLogin} />
+                </div>
+                </div>
+
+            </div>
+
         </AppLayout>
     );
 };

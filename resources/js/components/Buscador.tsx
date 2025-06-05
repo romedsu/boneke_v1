@@ -6,7 +6,7 @@ interface BuscadorProps {
 }
 
 const Buscador: React.FC<BuscadorProps> = ({ busqueda, setBusqueda }) => (
-    <div className="flex w-full items-center justify-center sm:w-1/2 md:w-[30%]">
+<div className="flex w-full max-w-full items-center justify-center sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4">
         <Search className="mr-3" />
         <input
             type="text"

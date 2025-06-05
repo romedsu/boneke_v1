@@ -20,17 +20,17 @@ const NuevoComentario: React.FC<{ anuncio_id: number }> = ({ anuncio_id }) => {
     };
 
     return (
-        <div className='mt-2'>
-            <div className="flex w-full pr-6  items-center justify-end gap-2 lg:justify-center">
+        <div className="mt-0">
+            <div className="flex w-full items-center justify-end gap-2 pr-6 lg:justify-center">
                 <MessageCirclePlus />
-                <h1 className='font-medium text-amber-600 lg:text-xl'>NUEVO COMENTARIO</h1>
+                <h1 className="font-medium text-amber-600 lg:text-xl">NUEVO COMENTARIO</h1>
             </div>
-            <div className="flex flex-col items-center mx-4 ">
-                <Card className="mx-4 mt-2 w-full max-w-[48rem] mb-3 border border-neutral-600">
+            <div className="mx-0 flex flex-col items-center">
+                <Card 
+                className="mx-2 mt-2 mb-3 w-full max-w-[48rem] border border-neutral-600">
                     <form onSubmit={submit}>
                         <label className="flex flex-col">
                             Añade tu comentario :
-                       
                             <Textarea
                                 className="mt-3"
                                 placeholder="¿Qué opinas sobre este anuncio?"
@@ -40,7 +40,10 @@ const NuevoComentario: React.FC<{ anuncio_id: number }> = ({ anuncio_id }) => {
                         </label>
 
                         <div className="flex justify-end">
-                            <Button disabled={processing} className="text-md mx-0 mt-5 rounded-3xl bg-amber-700 font-medium text-white">
+                            <Button
+                                disabled={processing}
+                                className="text-md mx-0 mt-5 rounded-3xl bg-amber-700 font-medium text-white hover:border hover:border-amber-700 hover:bg-transparent"
+                            >
                                 Comentar
                             </Button>
                         </div>

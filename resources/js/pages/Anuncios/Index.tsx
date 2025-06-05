@@ -22,6 +22,8 @@ import { Inertia } from '@inertiajs/inertia';
 
 import Buscador from '@/components/Buscador';
 
+import { Icon } from '@/components/ui/iconCat';
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Anuncios',
@@ -173,8 +175,9 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
 
                                 <CardDescription className="mb-2 flex justify-between gap-5">
                                     {/* categoria anuncio */}
-                                    <div className="flex items-center gap-1">
-                                        <LayoutGrid className="w-4" />
+                                    <div className="flex items-center gap-2">
+                                        {/* <LayoutGrid className="w-4" /> */}
+                                        <Icon name={anuncio.categoria.icon} className="w-5 h-5 text-neutral-400" />
                                         <a
                                             className="cursor-pointer font-semibold text-amber-600 hover:text-neutral-100"
                                             onClick={(e) => {
@@ -185,18 +188,19 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                                         >
                                             {/* {anuncio.categoria.nombre} */}
                                             {anuncio.categoria ? anuncio.categoria.nombre : 'Sin categoría'}
+
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         {/* autor */}
                                         <div className="flex items-center gap-1">
-                                            <UserPen className="w-4" />
+                                            <UserPen className="w-5" />
                                             <span className="font-semibold text-amber-600">{anuncio.user.name}</span>
                                         </div>
 
                                         {/* fecha */}
                                         <div className="flex items-center gap-1">
-                                            <CalendarDays className="w-4" />
+                                            <CalendarDays className="w-5" />
                                             <span className="font-medium text-amber-600">{new Date(anuncio.created_at).toLocaleDateString()}</span>
                                         </div>
                                     </div>
@@ -208,7 +212,7 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                                 <CardDescription className="h-[2rem]">{limitarPalabras(anuncio.descripcion, limite)}</CardDescription>
 
                                 {/* imagen */}
-                                <div className="mx-auto my-5 flex h-[8rem] w-[12rem] items-center justify-center overflow-hidden rounded-md bg-neutral-600 md:h-[10rem]">
+                                <div className="mx-auto my-5 flex h-[8rem] w-[12rem] items-center justify-center overflow-hidden rounded-md bg-neutral-700 md:h-[10rem]">
                                     {Array.isArray(anuncio.imagen) && anuncio.imagen.length > 0 && (
                                         <img
                                             src={`/storage/${anuncio.imagen[0]?.ruta}`}

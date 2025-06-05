@@ -40,6 +40,7 @@ class CategoriaController extends Controller
     {
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
+            'icon' => 'nullable|string|max:255',
         ]);
         Categoria::create($validatedData);
         return redirect()->route('categorias.index')->with('flash', 'Categoría creada');

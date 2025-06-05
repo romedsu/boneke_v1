@@ -9,8 +9,6 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 import { Card } from '@/components/ui/card';
 
-import AppLogoIcon from '@/components/app-logo-icon';
-
 const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: string }> = ({ categorias, titulo = 'Nuevo Anuncio' }) => {
     const { data, setData, post, processing, reset, errors } = useForm({
         articulo: '',
@@ -40,7 +38,7 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <div className="m-5 flex h-full max-w-7xl flex-1 flex-col rounded-xl p-4">
+<div className="mx-auto flex h-full w-full max-w-full flex-1 flex-col rounded-xl p-2 px-4  md:px-6 lg:px-12 xl:px-0 sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-7xl xl:p-4">
                 <Head title="Nuevo Anuncio" />
 
                 {/* HEADER */}
@@ -49,10 +47,13 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
                     <h1>{titulo}</h1>
                 </div>
 
-                <Card className="justify-centerpx-10 mx-auto w-full max-w-4xl items-start border border-amber-600 sm:px-10">
+                <Card className="mx-auto w-full max-w-4xl items-start justify-center border border-amber-600 px-10 sm:px-10">
                     {' '}
-                    <div className="m-auto flex h-20 w-20 items-center justify-center rounded-full bg-neutral-100 p-5 mb-5">
-                        <AppLogoIcon className="w-17 fill-current text-[var(--foreground)] dark:text-white" />
+                    <div className="flex items-center justify-center gap-2">
+                        {/* <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-neutral-100 p-5">
+        <AppLogoIcon className="w-17 fill-current text-[var(--foreground)] dark:text-white" />
+    </div> */}
+                        <img className="mb-4 w-60 bg-amber-700" src="/storage/boneke_04.png" alt="logo boneke" />
                     </div>
                     <form onSubmit={submit} encType="multipart/form-data">
                         <label>
@@ -101,12 +102,11 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
 
                         <label>
                             Descripción
-                            <Input
+                            <textarea
                                 value={data.descripcion}
                                 onChange={(e) => setData('descripcion', e.target.value)}
-                                type="text"
-                                className="mb-5"
-                                placeholder="Descripcion:"
+                                className="mb-5 max-h-60 min-h-[3rem] w-full resize-y rounded-md border border-neutral-800 p-2"
+                                placeholder="Descripción:"
                                 autoFocus
                             />
                             <InputError message={errors.descripcion} />
@@ -151,7 +151,9 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
                             <InputError message={errors.imagen} />
                         </label>
 
-                        <Button className="text-md mx-5 my-2 bg-amber-700 font-bold text-white">Publicar</Button>
+                        <div className="flex justify-end">
+                            <Button className="text-md mx-5 my-2 bg-amber-700 font-semibold text-white">Publicar</Button>
+                        </div>
                     </form>
                 </Card>
             </div>

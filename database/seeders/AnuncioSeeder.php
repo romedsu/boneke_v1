@@ -36,7 +36,7 @@ class AnuncioSeeder extends Seeder
             'Teléfono móvil' => 'Electrónica',
             'Caja de naranjas' => 'Alimentación',
             'Silla de oficina'=> 'Muebles',
-            'Cámara réflex' => 'Fotografía',
+           
             'Mesa de comedor' => 'Muebles',
             'Alfombra persa' => 'Hogar',
             'Guitarra eléctrica' => 'Música',
@@ -79,6 +79,11 @@ class AnuncioSeeder extends Seeder
             'Puzzle 1000 piezas' => 'Juegos',
         ];
 
+        $ciudades = [
+    'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Las Palmas', 'Bilbao',
+    'Alicante', 'Córdoba', 'Valladolid', 'Vigo', 'Gijón', 'Hospitalet', 'A Coruña', 'Vitoria', 'Granada', 'Elche'
+    ];
+
         // $user = User::first(); 
 
         foreach ($articulosCategorias as $articulo => $categoriaNombre) {
@@ -99,7 +104,7 @@ class AnuncioSeeder extends Seeder
                    'descripcion' => $faker->realText(200),
                 //    'cambio' => $faker->randomElement(['No', 'Sí', 'A negociar']),
                    'cambio' => $cambio,
-                   'lugar' => $faker->city(),
+                   'lugar' => $faker->randomElement($ciudades),
                    'user_id' => $user->id,
                    'categoria_id' => $categoria?->id,
                    
