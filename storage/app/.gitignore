@@ -1,7 +1,11 @@
 *
 # !private/
 # !public/
+!public/
+!public/logos/
+!public/logos/**
 !imagenes/
 !logos/
+
 # !imagenes/logos/
 !.gitignore
