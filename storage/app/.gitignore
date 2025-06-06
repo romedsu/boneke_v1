@@ -2,4 +2,6 @@
 # !private/
 # !public/
 !imagenes/
+!logos/
+# !imagenes/logos/
 !.gitignore
