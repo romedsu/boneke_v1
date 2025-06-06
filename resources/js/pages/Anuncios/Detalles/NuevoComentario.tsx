@@ -20,8 +20,8 @@ const NuevoComentario: React.FC<{ anuncio_id: number }> = ({ anuncio_id }) => {
     };
 
     return (
-        <div className="mt-0">
-            <div className="flex w-full items-center justify-end gap-2 pr-6 lg:justify-center">
+        <div className="mt-0 mb-4">
+            <div className="flex mb-1 w-full items-center justify-end gap-2 pr-6 lg:justify-center">
                 <MessageCirclePlus />
                 <h1 className="font-medium text-amber-600 lg:text-xl">NUEVO COMENTARIO</h1>
             </div>

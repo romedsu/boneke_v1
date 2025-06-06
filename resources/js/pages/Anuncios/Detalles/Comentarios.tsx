@@ -23,7 +23,7 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
             <NuevoComentario anuncio_id={anuncio_id} />
 
             {comentarios.length != 0 && (
-                <div className="flex w-full items-center justify-end gap-2 pr-5 lg:mt-1 lg:justify-center">
+                <div className="flex mb-1 w-full items-center justify-end gap-2 pr-5 lg:mt- lg:justify-center">
                     <MessagesSquare />
                     <h1 className="font-medium text-amber-600 lg:text-xl">COMENTARIOS</h1>
                 </div>
@@ -31,7 +31,7 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
             {comentarios.map((comentario) => (
                 <div key={comentario.id} className="flex justify-center">
                     <Card key={comentario.id}
-                     className="my-2 mx-0 w-full flex-col px-1 py-3">
+                     className="my-2 mx-0  w-full flex-col px-1 py-3">
                         <CardHeader>
                             {/* <CardTitle> {comentario.user.name}</CardTitle> */}
 

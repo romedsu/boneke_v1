@@ -154,11 +154,15 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                     </div>
 
                     {/* BUSCADOR */}
-                    <Buscador busqueda={busqueda} setBusqueda={setBusqueda} />
+                    {anuncios.length!=0 &&(
+                        <Buscador busqueda={busqueda} setBusqueda={setBusqueda} />
+                    )}
                 </div>
 
                 {/* ANUNCIOS */}
+            {anuncios.length!=0 ?(
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+                  
                     {/* {anunciosFiltrados.map((anuncio: any) => ( */}
                     {(busqueda.trim() ? resultados : anuncios).map((anuncio: any) => (
                         <Card
@@ -283,6 +287,10 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                         </Card>
                     ))}
                 </div>
+                  ):(
+                        <div className="text-neutral-400 italic text-center">No hay anuncios</div>
+                    )}
+
             </div>
             {/* PAGINACIÓN */}
              {/* eliminaa paginacion al hacer búsqueda        */}

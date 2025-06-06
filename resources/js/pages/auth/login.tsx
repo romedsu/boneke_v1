@@ -44,7 +44,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             
             <Head title="Inicio de sesión" />
 
-            <form className="flex flex-col gap-6" onSubmit={submit}>
+            <form className="flex flex-col gap-6 border-1 border-amber-600 p-7 rounded-2xl" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email</Label>
@@ -58,6 +58,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@ejemplo.com"
+                            className='border border-neutral-700'
                         />
                         <InputError message={errors.email} />
                     </div>

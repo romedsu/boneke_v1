@@ -34,7 +34,7 @@ export default function Register() {
     return (
         <AuthLayout title="Regístrate en Boneke" description="">
             <Head title="Register" />
-            <form className="flex flex-col gap-6" onSubmit={submit}>
+            <form className="flex flex-col gap-6 border-1 border-amber-600 p-7 rounded-2xl" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <Label htmlFor="name">Nombre</Label>
@@ -49,6 +49,7 @@ export default function Register() {
                             onChange={(e) => setData('name', e.target.value)}
                             disabled={processing}
                             placeholder="Nombre"
+                            className='border border-neutral-700'
                         />
                         <InputError message={errors.name} className="mt-2" />
                     </div>
@@ -101,7 +102,7 @@ export default function Register() {
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full rounded-3xl bg-amber-700" tabIndex={5} disabled={processing}>
+                    <Button type="submit" className=" w-full rounded-3xl bg-amber-700" tabIndex={5} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         <span className="text-white">Crear una cuenta</span>
                     </Button>
