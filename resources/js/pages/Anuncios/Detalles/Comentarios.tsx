@@ -52,11 +52,15 @@ const Comentarios: React.FC<{ comentarios: any[]; anuncio_id: number; userLogin:
                                     <input type="hidden" name="_method" value="PUT" />
 
                                     <textarea name="contenido" defaultValue={comentario.contenido} className="w-full rounded border p-2"></textarea>
-                                    <div className="mt-2 flex gap-2">
-                                        <Button type="submit" className="p-3">
+                                    <div className="my-2 flex gap-2 justify-end">
+                                        <Button type="submit" 
+                                        className="h-7 px-3 text-md mx-0 mt-5  rounded-3xl bg-amber-700 text-base font-medium text-white hover:border hover:border-amber-700 hover:bg-transparent"
+>
                                             Actualizar
                                         </Button>
-                                        <Button type="button" className="p-3" onClick={() => setEditable(null)}>
+                                        <Button type="button"
+                                           className="h-7 px-3 text-md text-neutral-200-700 mx-0 mt-5 rounded-3xl  border border-amber-700 bg-transparent font-medium transition hover:border-red-700 hover:bg-red-700 hover:text-white"
+                                          onClick={() => setEditable(null)}>
                                             Cancelar
                                         </Button>
                                     </div>

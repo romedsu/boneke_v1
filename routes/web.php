@@ -82,6 +82,9 @@ Route::resource('categorias', CategoriaController::class)
 //BUSCADOR (anuncio controller)
 Route::get('/buscar', [AnuncioController::class, 'buscar']);  
 
+Route::get('/quienes-somos', function () {
+    return Inertia::render('quienes-somos');
+});
 
 
 

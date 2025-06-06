@@ -42,7 +42,7 @@ class AnuncioSeeder extends Seeder
             'Guitarra eléctrica' => 'Música',
             'Aspiradora' => 'Electrodomésticos',
             'Impresora láser' => 'Informática',
-            'Cuidado de niños' => 'Servicios',
+            'Cuidado de personas mayores' => 'Servicios',
             'Moneda antigua' => 'Coleccionismo',
             'Clases de inglés' => 'Servicios',
             'Sofá de tres plazas' => 'Muebles',

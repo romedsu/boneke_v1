@@ -14,6 +14,7 @@ import { Trash2 } from 'lucide-react';
 import * as Icons from 'lucide-react';
 
 import { Icon } from '@/components/ui/iconCat';
+import Footer from '@/components/ui/footer';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -50,7 +51,7 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                 {/* NUEVA CATEGORIA (solo admin)  */}
                 {userLogin && userLogin.is_admin == true && (
                     // <div className="fixed right-4 bottom-4">
-                    <div className="mx-auto mb-4 flex w-full max-w-full flex-col items-center justify-center gap-4 rounded-xl bg-neutral-900 p-4 shadow-md sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl xl:p-6">
+                    <div className="mx-auto mb-4 flex w-full max-w-full flex-col items-center justify-center gap-4 rounded-xl bg-neutral-900 p-4 shadow-md sm:max-w-md md:max-w-md lg:max-w-xl xl:max-w-xl xl:p-6">
                         <h3 className="text-2xl">Nueva categoría</h3>
                         <div className="flex w-full items-end">
                             <form
@@ -78,7 +79,7 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                                 />
                                 <button
                                     type="submit"
-                                    className="rounded-3xl bg-amber-700 px-4 py-2 font-bold text-white hover:bg-amber-800"
+                                    className="inline-block w-auto self-start ml-auto rounded-3xl bg-amber-700 px-4 py-2 font-bold text-white border border-transparent hover:border hover:border-amber-700 hover:bg-transparent"
                                     disabled={processing}
                                 >
                                     Añadir
@@ -130,6 +131,7 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                     ))}
                 </div>
             </div>
+             <Footer />
         </AppLayout>
     );
 };

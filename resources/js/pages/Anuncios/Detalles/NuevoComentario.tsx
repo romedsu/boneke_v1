@@ -42,7 +42,7 @@ const NuevoComentario: React.FC<{ anuncio_id: number }> = ({ anuncio_id }) => {
                         <div className="flex justify-end">
                             <Button
                                 disabled={processing}
-                                className="text-md mx-0 mt-5 rounded-3xl bg-amber-700 font-medium text-white hover:border hover:border-amber-700 hover:bg-transparent"
+                                className="h-7 px-3 text-md mx-0 mt-5 rounded-3xl bg-amber-700 font-medium text-white hover:border hover:border-amber-700 hover:bg-transparent"
                             >
                                 Comentar
                             </Button>

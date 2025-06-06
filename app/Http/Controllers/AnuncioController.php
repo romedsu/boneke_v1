@@ -93,11 +93,11 @@ class AnuncioController extends Controller
         // Categoria::find($request->categoria_id);
         
        $validated=$request->validate([
-            'articulo'=>'required|string|max:255',
+            'articulo'=>'required|string|max:50',
             'valor'=>'required|numeric',
             'descripcion'=>'required|string|max:1000',
-            'cambio'=>'required|string|max:255',
-            'lugar'=>'required|string|max:255',
+            'cambio'=>'required|string|max:25',
+            'lugar'=>'required|string|max:25',
             'imagen'=>'required|array',
             'imagen.*'=>'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'categoria_id' => 'required|exists:categorias,id',
@@ -185,13 +185,13 @@ class AnuncioController extends Controller
     public function update(Request $request, $id)
     {
      //  dd('Método update llamado', $request->all());
-
+try{
         $validated=$request->validate([
-            'articulo'=>'required|string|max:255',
+            'articulo'=>'required|string|max:50',
             'valor'=>'required|numeric',
             'descripcion'=>'required|string|max:1000',
-            'cambio'=>'required|string|max:255',
-            'lugar'=>'required|string|max:255',
+            'cambio'=>'required|string|max:25',
+            'lugar'=>'required|string|max:25',
             'categoria_id' => 'required|exists:categorias,id',
             'imagen' => 'nullable|array',
             'imagen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -238,6 +238,9 @@ class AnuncioController extends Controller
         // return redirect()->route('anuncios.index')->with('actualizado','Anuncio editado con éxito');
 
         return back()->with('flash','Anuncio actualizado');
+           } catch (\Exception $e) {
+        return back()->with('flash', 'No se pudo actualizar el anuncio.');
+           }
     }
     
     /**

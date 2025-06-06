@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 import { Card } from '@/components/ui/card';
 
+import Footer from '@/components/ui/footer';
+
 const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: string }> = ({ categorias, titulo = 'Nuevo Anuncio' }) => {
     const { data, setData, post, processing, reset, errors } = useForm({
         articulo: '',
@@ -38,7 +40,7 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-<div className="mx-auto flex h-full w-full max-w-full flex-1 flex-col rounded-xl p-2 px-4  md:px-6 lg:px-12 xl:px-0 sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-7xl xl:p-4">
+            <div className="mx-auto flex h-full w-full max-w-full flex-1 flex-col rounded-xl p-2 px-4 sm:max-w-xl md:max-w-2xl md:px-6 lg:max-w-4xl lg:px-12 xl:max-w-7xl xl:p-4 xl:px-0">
                 <Head title="Nuevo Anuncio" />
 
                 {/* HEADER */}
@@ -53,7 +55,7 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
                         {/* <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-neutral-100 p-5">
         <AppLogoIcon className="w-17 fill-current text-[var(--foreground)] dark:text-white" />
     </div> */}
-                        <img className="mb-4 w-60 bg-amber-700" src="/storage/boneke_04.png" alt="logo boneke" />
+                        <img className="mb-4 w-60 rounded-xl bg-amber-700" src="/storage/logos/boneke_04.png" alt="logo boneke" />
                     </div>
                     <form onSubmit={submit} encType="multipart/form-data">
                         <label>
@@ -105,7 +107,7 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
                             <textarea
                                 value={data.descripcion}
                                 onChange={(e) => setData('descripcion', e.target.value)}
-                                className="mb-5 max-h-60 min-h-[3rem] w-full resize-y rounded-md border border-neutral-800 p-2"
+                                className="mb-5 max-h-60 min-h-[3rem] w-full resize-y rounded-md border p-2 focus:outline-2 focus:outline-offset-2 focus:outline-neutral-600"
                                 placeholder="Descripción:"
                                 autoFocus
                             />
@@ -152,10 +154,13 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
                         </label>
 
                         <div className="flex justify-end">
-                            <Button className="text-md mx-5 my-2 bg-amber-700 font-semibold text-white">Publicar</Button>
+                            <Button className="text-md mx-5 my-2 h-7 rounded-3xl bg-amber-700 px-3 font-medium text-white hover:border hover:border-amber-700 hover:bg-transparent">
+                                Publicar
+                            </Button>
                         </div>
                     </form>
                 </Card>
+            <Footer />
             </div>
         </AppLayout>
     );

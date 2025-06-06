@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, CirclePlus, Folder, Heart, LayoutGrid, ReceiptText,User,CornerDownRight } from 'lucide-react';
+import { BookOpen, CirclePlus, Folder, Heart, LayoutGrid, ReceiptText,User,CornerDownRight,UsersRound } from 'lucide-react';
 import AppLogo from './app-logo';
 import { usePage } from '@inertiajs/react';
 
@@ -39,6 +39,11 @@ const mainNavItems: NavItem[] = [
         href: '/mis-likes',
         icon: Heart,
     },
+    {
+        title: 'Quienes somos',
+        href: '/quienes-somos',
+        icon: UsersRound,
+    },
     // {
     //     title: 'Contacto',
     //     href: '/contacto',
@@ -70,7 +75,7 @@ export function AppSidebar() {
                             <Link href="/" prefetch
                                 className="flex   text-neutral-200 hover:text-neutral-100">
                                 <AppLogo />
-                            <img className="w-37 mx-auto " src="/storage/boneke_04.png" alt="logo boneke" />
+                            <img className="w-37 mx-auto " src="/storage/logos/boneke_04.png" alt="logo boneke" />
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
