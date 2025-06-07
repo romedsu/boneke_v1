@@ -317,6 +317,7 @@ public function misAnuncios()
         'anuncios' => $anuncios,
         'userLogin' =>Auth::user(),
         'titulo' => 'Mis Anuncios',
+        'flash' => session('flash'),
     ]);
 }
 
@@ -341,6 +342,7 @@ public function misLikes()
         'anuncios' => $anuncios,
         'userLogin' => Auth::user(),
         'titulo' => 'Favoritos',
+        'flash' => session('flash'),
     ]);
 }
 
@@ -359,9 +361,13 @@ public function updateLike(Anuncio $anuncio)
     $anuncio->loadCount('likes');
     $anuncio->liked_by_user = !$liked;
 
+    session()->flash('flash', $liked ? 'Like eliminado' : 'Like añadido');
+
+
     return response()->json([
         'anuncio' => $anuncio,
         'liked' => !$liked,
+
     ]);
 }
 

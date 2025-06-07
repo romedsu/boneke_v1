@@ -68,7 +68,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             <Label htmlFor="password">Contraseña</Label>
                             {canResetPassword && (
                                 <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    ¿Has olvidado tu contraseña?
+                                    Recuperar contraseña
                                 </TextLink>
                             )}
                         </div>

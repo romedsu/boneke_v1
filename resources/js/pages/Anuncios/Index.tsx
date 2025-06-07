@@ -81,7 +81,11 @@ const limitarPalabras = (texto: string, limite: number): string => {
 //     }
 // };
 
-const updateLike = async (anuncioId: number) => {
+const updateLike = async (anuncioId: number, userLogin: any) => {
+    if (!userLogin) {
+        window.location.href = route('login');
+        return;
+    }
     try {
         await fetch(`/anuncios/${anuncioId}/like`, {
             method: 'PUT',
@@ -91,8 +95,7 @@ const updateLike = async (anuncioId: number) => {
             },
         });
 
-        // Recarga los datos de la página actual desde el backend
-
+        //recarga datos (actualiza y muestra msjFeedback)
         Inertia.reload({ only: ['anuncios'] });
     } catch (error) {
         console.error('Error al dar like:', error);
@@ -108,14 +111,6 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
     const [busqueda, setBusqueda] = useState('');
 
     const [resultados, setResultados] = useState([]);
-
-    //  filtrar anuncios para buscador
-    // const anunciosFiltrados = anuncios.filter(
-    //     (anuncio: any) =>
-    //         anuncio.articulo.toLowerCase().includes(busqueda.toLowerCase()) ||
-    //         anuncio.descripcion.toLowerCase().includes(busqueda.toLowerCase()) ||
-    //         anuncio.lugar.toLowerCase().includes(busqueda.toLowerCase()),
-    // );
 
     //Buscar anuncios al escribir en el buscador
     useEffect(() => {
@@ -233,7 +228,7 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                updateLike(anuncio.id);
+                                                updateLike(anuncio.id, userLogin);
                                             }}
                                             className="flex cursor-pointer items-center gap-1 border-none bg-transparent p-0"
                                         >
@@ -290,29 +285,29 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                 ) : (
                     <div className="text-center text-neutral-400 italic">No hay anuncios</div>
                 )}
-                </div>
-                {/* PAGINACIÓN */}
-                {/* eliminaa paginacion al hacer búsqueda        */}
-              
-                    {anuncios.length != 0 && !busqueda.trim() && (
-                        <div className="mt-2 mb-7 flex justify-center gap-2">
-                        {initialAnuncios.links.map((link: any, idx: number) => (
-                            <button
+            </div>
+            {/* PAGINACIÓN */}
+            {/* eliminaa paginacion al hacer búsqueda        */}
+
+            {anuncios.length != 0 && !busqueda.trim() && (
+                <div className="mt-2 mb-7 flex justify-center gap-2">
+                    {initialAnuncios.links.map((link: any, idx: number) => (
+                        <button
                             key={idx}
                             disabled={!link.url}
                             onClick={() => link.url && window.location.assign(link.url)}
                             className={`rounded-2xl px-3 py-1 ${
                                 link.active
-                                ? 'bg-amber-700 font-bold text-white'
-                                : 'border border-amber-700 text-neutral-400 hover:cursor-pointer hover:text-neutral-100'
-                                }`}
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                                />
-                            ))}
-                            </div>
-                )}
+                                    ? 'bg-amber-700 font-bold text-white'
+                                    : 'border border-amber-700 text-neutral-400 hover:cursor-pointer hover:text-neutral-100'
+                            }`}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                        />
+                    ))}
+                </div>
+            )}
 
-                <Footer />
+            <Footer />
         </AppLayout>
     );
 };
