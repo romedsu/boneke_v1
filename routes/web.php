@@ -54,11 +54,6 @@ Route::get('/mis-anuncios', [AnuncioController::class, 'misAnuncios'])->name('an
 Route::get('/mis-likes', [AnuncioController::class, 'misLikes'])->name('anuncios.misLikes')->middleware('auth');
 
 
-        
-// Route::get('/create', [AnuncioController::class, 'create']);
-        
-// Route::get('/anuncios/index', [AnuncioController::class, 'index'])->name('anuncios.index');
-        
 Route::get('/contacto',function(){
         return Inertia::render('Contacto');
 });
@@ -66,15 +61,13 @@ Route::get('/contacto',function(){
 //COMENTARIOS
 Route::resource('comentarios', ComentarioController::class);
 
-// Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-//      ->middleware('web')
-//      ->name('logout');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
-
+//LIKES
 Route::put('/likes/{anuncio}', [LikeController::class, 'update'])->middleware('auth');
 
+//CATEGORIAS
 Route::resource('categorias', CategoriaController::class)
         ->only(['index','show','store','destroy'])
         ->middleware(['auth']);
@@ -82,6 +75,7 @@ Route::resource('categorias', CategoriaController::class)
 //BUSCADOR (anuncio controller)
 Route::get('/buscar', [AnuncioController::class, 'buscar']);  
 
+//QUINES SOMOS
 Route::get('/quienes-somos', function () {
     return Inertia::render('quienes-somos');
 });

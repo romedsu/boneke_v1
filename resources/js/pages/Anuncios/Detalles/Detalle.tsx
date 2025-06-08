@@ -369,8 +369,8 @@ const Detalle: React.FC<{ anuncio: any; userLogin: any; comentarios: any; catego
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
+                <Footer />
         </AppLayout>
     );
 };

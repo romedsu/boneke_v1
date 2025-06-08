@@ -54,7 +54,7 @@ class CategoriaSeeder extends Seeder
         ['nombre' => 'Música',           'icon' => 'Music'],
         ['nombre' => 'Informática',      'icon' => 'Laptop'],
         ['nombre' => 'Servicios',        'icon' => 'Paintbrush'],
-        ['nombre' => 'Empleo',           'icon' => 'UserCheck'],
+        // ['nombre' => 'Empleo',           'icon' => 'UserCheck'],
         ['nombre' => 'Salud',            'icon' => 'HeartPulse'],
         ['nombre' => 'Belleza',          'icon' => 'Scissors'],
         ['nombre' => 'Arte',             'icon' => 'Palette'],

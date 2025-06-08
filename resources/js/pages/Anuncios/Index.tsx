@@ -35,7 +35,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 //TOKEN (recuperar token almacenado en meta, para su uso en botones editar y borrar)
 // const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
-
 const getToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
 
 // FN para limitar máximo palabras para mostrar
@@ -48,38 +47,6 @@ const limitarPalabras = (texto: string, limite: number): string => {
     return texto;
 };
 
-//FN para actualizar likes
-// const updateLike = async (anuncioId: number, setAnuncios: React.Dispatch<React.SetStateAction<any[]>>) => {
-//     try {
-//         const res = await fetch(`/likes/${anuncioId}`, {
-//             method: 'PUT',
-//             headers: {
-//                 // 'X-CSRF-TOKEN': token,
-//                 'X-CSRF-TOKEN': getToken(),
-//                 'Content-Type': 'application/json',
-//             },
-//         });
-//         console.log('Token usado para like:', getToken());
-//         const data = await res.json();
-
-//         toast.success(data.liked ? '¡Te gusta!' : 'Ya no te gusta...');
-
-//         // Actualizar lod likes en el estado
-//         setAnuncios((prevAnuncios) =>
-//             prevAnuncios.map((anuncio) =>
-//                 anuncio.id === anuncioId
-//                     ? {
-//                           ...anuncio,
-//                           liked_by_user: data.liked,
-//                           likes_count: data.liked ? anuncio.likes_count + 1 : anuncio.likes_count - 1,
-//                       }
-//                     : anuncio,
-//             ),
-//         );
-//     } catch (error) {
-//         console.error('Error al dar like:', error);
-//     }
-// };
 
 const updateLike = async (anuncioId: number, userLogin: any) => {
     if (!userLogin) {
@@ -160,9 +127,6 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                         {(busqueda.trim() ? resultados : anuncios).map((anuncio: any) => (
                             <Card
                                 key={anuncio.id}
-                                // className="m-1.5 bg-neutral-800 px-1"
-
-                                // className="m-2 h-[24.5rem] max-w-2xl cursor-pointer border border-transparent px-1 py-3 duration-500 hover:border-amber-600"
                                 className="m-2 h-[22.5rem] w-full max-w-full cursor-pointer border border-transparent px-0 py-2 duration-500 hover:border-amber-600 sm:max-w-md md:h-[24.5rem] md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl"
                                 onClick={() => (window.location.href = route('anuncios.show', anuncio.id))}
                             >
@@ -175,7 +139,7 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                                         {/* categoria anuncio */}
                                         <div className="flex items-center gap-2">
                                             {/* <LayoutGrid className="w-4" /> */}
-                                            <Icon name={anuncio.categoria.icon} className="h-5 w-5 text-neutral-400" />
+                                            <Icon name={anuncio.categoria?.icon} className="h-5 w-5 text-neutral-400" />
                                             <a
                                                 className="cursor-pointer font-semibold text-amber-600 hover:text-neutral-100"
                                                 onClick={(e) => {
@@ -262,7 +226,6 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                                                     type="submit"
                                                     size="icon"
                                                     variant="ghost"
-                                                    //  className='rounded-2xl border border-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-amber-700 hover:bg-transparent hover:cursor-pointer'
                                                     className="flex h-8 w-8 items-center justify-center rounded-full border border-amber-700 bg-transparent font-semibold text-neutral-200 transition duration-400 hover:border hover:border-red-800 hover:bg-red-800"
                                                 >
                                                     <Trash2 className="h-5 w-5" />
@@ -286,9 +249,9 @@ const Index: React.FC<{ anuncios: any; userLogin: any; titulo?: string }> = ({ a
                     <div className="text-center text-neutral-400 italic">No hay anuncios</div>
                 )}
             </div>
+            
             {/* PAGINACIÓN */}
             {/* eliminaa paginacion al hacer búsqueda        */}
-
             {anuncios.length != 0 && !busqueda.trim() && (
                 <div className="mt-2 mb-7 flex justify-center gap-2">
                     {initialAnuncios.links.map((link: any, idx: number) => (

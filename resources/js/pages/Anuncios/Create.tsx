@@ -53,8 +53,8 @@ const Create: React.FC<{ categorias: { id: number; nombre: string }[]; titulo?: 
                     {' '}
                     <div className="flex items-center justify-center gap-2">
                         {/* <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-neutral-100 p-5">
-        <AppLogoIcon className="w-17 fill-current text-[var(--foreground)] dark:text-white" />
-    </div> */}
+                         <AppLogoIcon className="w-17 fill-current text-[var(--foreground)] dark:text-white" />
+                        </div> */}
                         <img className="mb-4 w-60 rounded-xl bg-amber-700" src="/storage/logos/boneke_04.png" alt="logo boneke" />
                     </div>
                     <form onSubmit={submit} encType="multipart/form-data">

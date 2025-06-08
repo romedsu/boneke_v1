@@ -45,6 +45,7 @@ class AnuncioController extends Controller
         
         $anuncios=Anuncio::with('user','imagen','categoria')
         ->orderBy('created_at', 'desc') 
+        //  ->orderBy('id', 'asc')
         ->withCount('comentario','likes')
         ->paginate(9);
 

@@ -13,8 +13,8 @@ import { Trash2 } from 'lucide-react';
 
 import * as Icons from 'lucide-react';
 
-import { Icon } from '@/components/ui/iconCat';
 import Footer from '@/components/ui/footer';
+import { Icon } from '@/components/ui/iconCat';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -36,7 +36,8 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
             <FlashMsj />
 
             {/* CONTENIDO */}
-<div className="mx-auto flex h-full w-full flex-1 flex-col gap-4 rounded-xl p-5 sm:p-4 lg:max-w-7xl">                <Head title="Categorías" />
+            <div className="mx-auto flex h-full w-full flex-1 flex-col gap-4 rounded-xl p-5 sm:p-4 lg:max-w-7xl">
+                <Head title="Categorías" />
 
                 {/* HEADER */}
                 <div className="m-4 flex flex-col items-center justify-end gap-2 md:flex-row">
@@ -50,7 +51,6 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
 
                 {/* NUEVA CATEGORIA (solo admin)  */}
                 {userLogin && userLogin.is_admin == true && (
-                    // <div className="fixed right-4 bottom-4">
                     <div className="mx-auto mb-4 flex w-full max-w-full flex-col items-center justify-center gap-4 rounded-xl bg-neutral-900 p-4 shadow-md sm:max-w-md md:max-w-md lg:max-w-xl xl:max-w-xl xl:p-6">
                         <h3 className="text-2xl">Nueva categoría</h3>
                         <div className="flex w-full items-end">
@@ -79,7 +79,7 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                                 />
                                 <button
                                     type="submit"
-                                    className="inline-block w-auto self-start ml-auto rounded-3xl bg-amber-700 px-4 py-2 font-bold text-white border border-transparent hover:border hover:border-amber-700 hover:bg-transparent"
+                                    className="ml-auto inline-block w-auto self-start rounded-3xl border border-transparent bg-amber-700 px-4 py-2 font-bold text-white hover:border hover:border-amber-700 hover:bg-transparent"
                                     disabled={processing}
                                 >
                                     Añadir
@@ -97,11 +97,8 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                             className="group flex cursor-pointer items-center gap-4 rounded-lg border bg-neutral-900 p-4 shadow transition hover:bg-amber-700"
                             onClick={() => (window.location.href = route('anuncios.porCategoria', categoria.id))}
                         >
-                            {/* <span className="w-16 font-bold">ID: {categoria.id}</span> */}
-                            {/* <span className="w-16 font-bold">{categoria.icono}</span> */}
-
                             <Icon name={categoria.icon} className="h-5 w-5 text-amber-700 group-hover:text-neutral-300 sm:h-6 sm:w-6 md:h-6 md:w-6" />
-                            <span className="text-lg font-medium sm:text-base md:text-md">{categoria.nombre}</span>
+                            <span className="md:text-md text-lg font-medium sm:text-base">{categoria.nombre}</span>
                             {/* BORRAR CATEGORIA (solo admin) */}
                             {userLogin && userLogin.is_admin == true && (
                                 // OPCION A
@@ -131,7 +128,7 @@ const Index: React.FC<{ categorias: any; titulo: any; userLogin: any }> = ({ cat
                     ))}
                 </div>
             </div>
-             <Footer />
+            <Footer />
         </AppLayout>
     );
 };

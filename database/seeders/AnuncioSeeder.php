@@ -37,24 +37,31 @@ class AnuncioSeeder extends Seeder
             'Caja de naranjas' => 'Alimentación',
             'Silla de oficina'=> 'Muebles',
            
-            'Mesa de comedor' => 'Muebles',
-            'Alfombra persa' => 'Hogar',
+            'Cochecito de bebé' => 'Infantil',
             'Guitarra eléctrica' => 'Música',
+            'Moto' => 'Vehículos',
+            'Alfombra persa' => 'Hogar',
             'Aspiradora' => 'Electrodomésticos',
+            'Cuadro óleo' => 'Arte',
+            'Lámpara' => 'Hogar',
             'Impresora láser' => 'Informática',
             'Cuidado de personas mayores' => 'Servicios',
+            'Tumbona' => 'Jardín',
             'Moneda antigua' => 'Coleccionismo',
             'Clases de inglés' => 'Servicios',
-            'Sofá de tres plazas' => 'Muebles',
+            'Sofá salón' => 'Muebles',
             'Reloj' => 'Moda',
             'Portátil Lenovo' => 'Informática',
+            'Raqueta pádel' => 'Deportes',
+            
             'Microondas'=> 'Electrodomésticos',
-            'Cochecito de bebé' => 'Infantil',
-            'PlayStation 4' => 'Videojuegos',
+            'PlayStation 5' => 'Videojuegos',
             'Coche teledirigido' => 'Juguetes',
+            'Mesa de comedor' => 'Muebles',
             'Tablet Samsung' => 'Electrónica',
             'Transportín para gatos' => 'Mascotas',
             'Patinete eléctrico' => 'Transporte',
+            'Secador' => 'Belleza',
             'Juego de mesa' => 'Juegos',
             'Cámara retro' => 'Fotografía',
             'Cafetera espresso' => 'Electrodomésticos',
@@ -63,7 +70,7 @@ class AnuncioSeeder extends Seeder
             
             'Chaqueta de cuero' => 'Moda',
             'Nintendo Switch' => 'Videojuegos',
-            'Lámpara de mesa' => 'Hogar',
+            
             'Collar de perro' => 'Mascotas',
             'Muñeca articulada' => 'Juguetes',
             'Lavadora'=> 'Electrodomésticos',
@@ -87,14 +94,14 @@ class AnuncioSeeder extends Seeder
         // $user = User::first(); 
 
         foreach ($articulosCategorias as $articulo => $categoriaNombre) {
-                //  $articulo = $faker->randomElement(array_keys($articulosCategorias));
+            //  $articulo = $faker->randomElement(array_keys($articulosCategorias));
                  
             $categoria = Categoria::where('nombre', $categoriaNombre)->first();
 
             //Excepto admin
             $user = User::where('is_admin', false)->inRandomOrder()->first();
 
-                $cambio = $faker->randomElement(array_keys($articulosCategorias));
+            $cambio = $faker->randomElement(array_keys($articulosCategorias));
 
 
                
